@@ -1,2 +1,4 @@
 /node_modules
 /dist
+urls.js
+.clasp.json

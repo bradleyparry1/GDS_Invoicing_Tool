@@ -36,6 +36,7 @@ module.exports = {
     new HtmlWebpackInlineSourcePlugin(),
     new CopyPlugin([
         'code.js',
+        'urls.js',
         'appsscript.json',
         '.clasp.json'
     ])
