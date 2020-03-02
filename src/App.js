@@ -2,6 +2,8 @@ import React from "react";
 
 function App() {
     return (
-        <div>Test</div>
+        <div>Testsdfsdfsdf</div>
     )
 }
+
+export default App;
