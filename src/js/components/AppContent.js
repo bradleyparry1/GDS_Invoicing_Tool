@@ -1,45 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext } from 'react'
+import AppContext from '../functions/AppContext'
+import GlobalToolbar from './ui/GlobalToolbar';
+import Tab1 from './Tab1';
+import Tab1Toolbar from './Tab1Toolbar';
 import Tab from 'react-bootstrap/Tab'
 import Nav from 'react-bootstrap/Nav'
-import processData from '../functions/dataProcessing'
+import ProgressBar from 'react-bootstrap/ProgressBar'
+
 
 function AppContent(props){
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        google.script.run
-            .withSuccessHandler(processData)
-            .withUserObject({setLoading})
-            .getData();
-    },[]);
-
+    const appContext = useContext(AppContext);
     return (
         <div id='display'>
-            { loading ?
+            { appContext.loading ?
             <div style={{padding: '50px'}}>
-                <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                    role="progressbar" aria-valuenow="100" 
-                    aria-valuemin="0" aria-valuemax="100">Loading...</div>
-                </div>
+                <ProgressBar animated now={100} label={'Loading...'}/>
             </div> : 
+                
                 <Tab.Container defaultActiveKey="first" transition={false}>
                     <Nav>
                     <Nav.Item className='flexi-tab'>
                         <Nav.Link className='tab-link' eventKey="first">
-                        Tab 1
+                            Tab 1
                         </Nav.Link>
                     </Nav.Item>
                     <Nav.Item className='flexi-tab'>
                         <Nav.Link className='tab-link' eventKey="second">
-                        Tab 2
+                            Tab 2
                         </Nav.Link>
                     </Nav.Item>
                     </Nav>
-
+                    <GlobalToolbar />
                     <Tab.Content>
                     <Tab.Pane eventKey="first">
-                        Tab 1
+                        <Tab1Toolbar />
+                        <Tab1 />
                     </Tab.Pane>
                     <Tab.Pane eventKey="second">
                         Tab 2
@@ -48,7 +43,7 @@ function AppContent(props){
                 </Tab.Container>
             }
         </div>
-        );
+    );
 }
 
 export default AppContent;

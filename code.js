@@ -6,7 +6,7 @@ function doGet(e) {
     var user = Session.getActiveUser().getEmail();
 
     if(user != "bradley.parry@digital.cabinet-office.gov.uk"){
-        var sheet = SpreadsheetApp.openByUrl(trackingSheetUrl).getSheetByName("UPDATE THIS");
+        var sheet = SpreadsheetApp.openById(trackingSheetId).getSheetByName("UPDATE THIS");
         sheet.appendRow([user.replace("@digital.cabinet-office.gov.uk","").replace("."," "),new Date()]);
     }
 
@@ -20,9 +20,9 @@ function doGet(e) {
 }
 
 function getData(){
-    var data = SpreadsheetApp.openByUrl(hrDataStoreUrl)
+    var data = SpreadsheetApp.openById(hrDataStoreId)
                              .getSheetByName("Data").getDataRange().getValues();
-    var val = SpreadsheetApp.openByUrl(hrDataStoreUrl)
+    var val = SpreadsheetApp.openById(hrDataStoreId)
                             .getSheetByName("Validation").getDataRange().getValues();
 
     return JSON.stringify({"Data": data,
@@ -30,7 +30,7 @@ function getData(){
 }
 
 function createPermissionsDict(){
-    var data = SpreadsheetApp.openByUrl(hrDataStoreUrl)
+    var data = SpreadsheetApp.openById(hrDataStoreId)
                              .getSheetByName("Permissions").getDataRange().getValues();
     var titles = data[0];
     var dict = {};
