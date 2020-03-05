@@ -5,12 +5,10 @@ import Col from 'react-bootstrap/Col';
 
 function Tab1Toolbar() {
     return (
-        <Container className='tab-toolbar'>
-            <Row>
-                <Col></Col>
-                <Col></Col>
-            </Row>
-        </Container>
+        <Row>
+            <Col></Col>
+            <Col></Col>
+        </Row>
     )
 }
 

@@ -20,17 +20,20 @@ function doGet(e) {
 }
 
 function getData(){
-    var data = SpreadsheetApp.openById(hrDataStoreId)
-                             .getSheetByName("Data").getDataRange().getValues();
-    var val = SpreadsheetApp.openById(hrDataStoreId)
-                            .getSheetByName("Validation").getDataRange().getValues();
+    var db = objDB.open(invoicingId);
+    
+    const products = objDB.getRows( db, "Products");
+    const departments = objDB.getRows( db, "Departments");
+    const services = objDB.getRows( db, "Services");
+    const pos = objDB.getRows( db, "POs");
+    const invoices = objDB.getRows( db, "Invoices");
+    const contacts = objDB.getRows( db, "Contacts");
 
-    return JSON.stringify({"Data": data,
-                            "Val": val});
+    return JSON.stringify({products, departments, services, pos, invoices, contacts});
 }
 
 function createPermissionsDict(){
-    var data = SpreadsheetApp.openById(hrDataStoreId)
+    var data = SpreadsheetApp.openById(invoicingId)
                              .getSheetByName("Permissions").getDataRange().getValues();
     var titles = data[0];
     var dict = {};

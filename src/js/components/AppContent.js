@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import AppContext from '../functions/AppContext'
 import GlobalToolbar from './ui/GlobalToolbar';
+import TabToolbar from './ui/TabToolbar';
 import Tab1 from './Tab1';
 import Tab1Toolbar from './Tab1Toolbar';
 import Tab from 'react-bootstrap/Tab'
 import Nav from 'react-bootstrap/Nav'
 import ProgressBar from 'react-bootstrap/ProgressBar'
-
 
 function AppContent(props){
     const appContext = useContext(AppContext);
@@ -33,10 +33,13 @@ function AppContent(props){
                     <GlobalToolbar />
                     <Tab.Content>
                     <Tab.Pane eventKey="first">
-                        <Tab1Toolbar />
+                        <TabToolbar>
+                            <Tab1Toolbar />
+                        </TabToolbar>
                         <Tab1 />
                     </Tab.Pane>
                     <Tab.Pane eventKey="second">
+                        <TabToolbar />
                         Tab 2
                     </Tab.Pane>
                     </Tab.Content>
