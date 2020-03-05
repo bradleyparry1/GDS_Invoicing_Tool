@@ -1,4 +1,4 @@
-# reactgoogleappsscripttemplate
+# GDS Invoicing Tool
 Single Page App on Google Apps Script using React.js
 
 ## Usage
@@ -20,7 +20,7 @@ Open terminal and clone this project.
 You have to create an Apps Script project to run this code.
 
 ```bash
-clasp create --type standalone --title "React Google Apps Script Template"
+clasp create --type standalone --title "GDS Invoicing Tool"
 ```
 
 Now build the project and upload to your newly created Apps Script project
