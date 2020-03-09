@@ -1,7 +1,7 @@
 import React from 'react'
 import Container from 'react-bootstrap/Container';
 
-const TabToolbar = ({children}) => {
+const ToolbarSection = ({children}) => {
     return (
         <Container className='tab-toolbar'>
             {children}
@@ -9,4 +9,4 @@ const TabToolbar = ({children}) => {
     )
 }
 
-export default TabToolbar;
+export default ToolbarSection;

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import AppContext from '../functions/AppContext';
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -12,9 +13,13 @@ import calculateDepartmentInvoiceQuantity from '../functions/calculateDepartment
 import calculateDepartmentInvoiceValue from '../functions/calculateDepartmentInvoiceValue';
 import formatMoney from '../functions/utilities'
 
-function Tab1() {
-    const { tree, product } = useContext(AppContext);
+function DepartmentsTable() {
+    const { tree, product, department } = useContext(AppContext);
     const currentDepartments = tree.value[product.value].departments;
+    
+    const viewDepartment = (departmentId) => {
+        department.updateFunction(departmentId);
+    }
 
     return (
         <Container>
@@ -24,7 +29,11 @@ function Tab1() {
                 const outstanding = billingAmount - invoiceAmount;
                 return (
                     <Row>
-                        <Col xs={3}>{department.DepartmentName}</Col>
+                        <Col xs={3}>
+                            <Button variant='link' onClick={() => viewDepartment(department.ID)}>
+                                {department.DepartmentName}
+                            </Button>
+                        </Col>
                         <Col>{keys(department.services).length}</Col>
                         <Col>{calculateDepartmentPoQuantity(department)}</Col>
                         <Col>{formatMoney(calculateDepartmentPoValue(department))}</Col>
@@ -39,4 +48,4 @@ function Tab1() {
     )
 }
 
-export default Tab1;
+export default DepartmentsTable;

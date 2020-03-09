@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import AppContext from '../functions/AppContext';
 import map from 'lodash/map';
 
-function Tab1Toolbar() {
+function ProductSelect() {
     const appContext = useContext(AppContext);
 
     const updateProduct = (e) => {
@@ -26,4 +26,4 @@ function Tab1Toolbar() {
     )
 }
 
-export default Tab1Toolbar;
+export default ProductSelect;

@@ -3,13 +3,15 @@ import AppContext from './js/functions/AppContext'
 import processData from './js/functions/dataProcessing'
 import Brand from './js/components/ui/Brand';
 import Flash from './js/components/ui/Flash';
-import AppContent from './js/components/AppContent';
+import Home from './js/views/Home';
+import Department from './js/views/Department';
 
 function App(){
     const [loading, setLoading] = useState(true);
     const [flash, setFlash] = useState("");
 
     const [product, setProduct] = useState(null)
+    const [department, setDepartment] = useState(null);
 
     const [products, setProducts] = useState({});
     const [departments, setDepartments] = useState({});
@@ -32,6 +34,10 @@ function App(){
         products: {
             value: products, 
             updateFunction: setProducts
+        },
+        department: {
+          value: department, 
+          updateFunction: setDepartment
         },
         departments: {
           value: departments, 
@@ -92,7 +98,11 @@ function App(){
                           <Flash flash={flash} />
                         </div>
                       </div>
-                      <AppContent />
+                        { department ? 
+                          <Department />
+                        :
+                          <Home />
+                        }
                     </div>
                   </main>
                 </div>
