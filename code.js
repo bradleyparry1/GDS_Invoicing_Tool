@@ -14,7 +14,7 @@ function doGet(e) {
 
     if(permissions[user]){
         return template.evaluate()
-            .setTitle('Title')
+            .setTitle('Invoicing Tool')
             .setSandboxMode(HtmlService.SandboxMode.IFRAME);
     }
 }
@@ -22,6 +22,7 @@ function doGet(e) {
 function getData(){
     var db = objDB.open(invoicingId);
     
+    const notifyUsage = objDB.getRows( db, "Notify Usage Data");
     const products = objDB.getRows( db, "Products");
     const departments = objDB.getRows( db, "Departments");
     const services = objDB.getRows( db, "Services");
@@ -29,7 +30,7 @@ function getData(){
     const invoices = objDB.getRows( db, "Invoices");
     const contacts = objDB.getRows( db, "Contacts");
 
-    return JSON.stringify({products, departments, services, pos, invoices, contacts});
+    return JSON.stringify({products, departments, services, pos, invoices, contacts, notifyUsage});
 }
 
 function createPermissionsDict(){

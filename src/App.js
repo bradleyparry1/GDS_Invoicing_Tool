@@ -8,12 +8,16 @@ import AppContent from './js/components/AppContent';
 function App(){
     const [loading, setLoading] = useState(true);
     const [flash, setFlash] = useState("");
+
+    const [product, setProduct] = useState(null)
+
     const [products, setProducts] = useState({});
     const [departments, setDepartments] = useState({});
     const [services, setServices] = useState({});
     const [pos, setPos] = useState({});
     const [invoices, setInvoices] = useState({});
     const [contacts, setContacts] = useState({});
+    const [tree, setTree] = useState({});
     
     const flashMessage = (msg) => {
       setFlash(msg);
@@ -21,6 +25,10 @@ function App(){
     }
 
     const value = {
+        product: {
+            value: product, 
+            updateFunction: setProduct
+        },
         products: {
             value: products, 
             updateFunction: setProducts
@@ -45,6 +53,10 @@ function App(){
           value: contacts, 
           updateFunction: setContacts
         },
+        tree: {
+          value: tree, 
+          updateFunction: setTree
+        },
         flash: flashMessage,
         loading
     }
@@ -54,13 +66,15 @@ function App(){
           .withSuccessHandler(processData)
           .withUserObject(
             {
+              setProduct,
               setLoading, 
               setProducts, 
               setDepartments, 
               setServices, 
               setPos, 
               setInvoices, 
-              setContacts
+              setContacts,
+              setTree
             }
           )
           .getData();
