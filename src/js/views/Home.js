@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import AppContext from '../functions/AppContext'
 import ToolbarSection from '../components/ui/ToolbarSection';
-import DepartmentsTable from '../components/DepartmentsTable';
+import DepartmentsTable from '../components/DepartmentsList';
 import ProductSelect from '../components/ProductSelect';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 

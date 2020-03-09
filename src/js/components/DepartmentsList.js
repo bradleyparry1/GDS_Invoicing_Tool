@@ -6,14 +6,17 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import map from 'lodash/map';
 import keys from 'lodash/keys';
-import calculateDepartmentUsageBillingTotal from '../functions/calculateDepartmentUsageBillingTotal';
-import calculateDepartmentPoQuantity from '../functions/calculateDepartmentPoQuantity';
-import calculateDepartmentPoValue from '../functions/calculateDepartmentPoValue';
-import calculateDepartmentInvoiceQuantity from '../functions/calculateDepartmentInvoiceQuantity';
-import calculateDepartmentInvoiceValue from '../functions/calculateDepartmentInvoiceValue';
+import {
+    calculateDepartmentUsageBillingTotal,
+    calculateDepartmentPoQuantity,
+    calculateDepartmentPoValue,
+    calculateDepartmentInvoiceQuantity,
+    calculateDepartmentInvoiceValue
+    } from '../functions/departmentFunctions';
+
 import formatMoney from '../functions/utilities'
 
-function DepartmentsTable() {
+function DepartmentsList() {
     const { tree, product, department } = useContext(AppContext);
     const currentDepartments = tree.value[product.value].departments;
     
@@ -48,4 +51,4 @@ function DepartmentsTable() {
     )
 }
 
-export default DepartmentsTable;
+export default DepartmentsList;

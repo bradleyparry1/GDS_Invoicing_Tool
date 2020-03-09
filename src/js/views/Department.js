@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import UsageSection from '../components/UsageSection'
+import ServicesList from '../components/ServicesList'
 import AppContext from '../functions/AppContext'
 
 function Department(){
@@ -34,9 +36,9 @@ function Department(){
             </Row>
             <Row>
                 <Col xs={4}>
-                    <Alert variant={'dark'}>
-                        Usage
-                    </Alert>
+                    <UsageSection
+                        usage={departmentData.usage}
+                        />
                 </Col>
                 <Col xs={4}>
                     <Alert variant={'primary'}>
@@ -49,6 +51,7 @@ function Department(){
                     </Alert>
                 </Col>
             </Row>
+            <ServicesList services={departmentData.services} />
         </Container>
     )
 }
