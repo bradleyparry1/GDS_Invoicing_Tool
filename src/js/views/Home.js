@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
-import AppContext from '../functions/AppContext'
+import AppContext from './AppContext'
 import ToolbarSection from '../components/ui/ToolbarSection';
 import DepartmentsTable from '../components/DepartmentsList';
 import ProductSelect from '../components/ProductSelect';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
-function AppContent(props){
+function Home(props){
     const { loading } = useContext(AppContext);
     return (
         <div id='display'>
@@ -24,4 +24,4 @@ function AppContent(props){
     );
 }
 
-export default AppContent;
+export default Home;

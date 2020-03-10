@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import AppContext from '../functions/AppContext';
+import AppContext from '../views/AppContext';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,7 +13,6 @@ import {
     calculateDepartmentInvoiceQuantity,
     calculateDepartmentInvoiceValue
     } from '../functions/departmentFunctions';
-
 import formatMoney from '../functions/utilities'
 
 function DepartmentsList() {

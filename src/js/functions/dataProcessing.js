@@ -20,6 +20,7 @@ function processData(d,dict){
         let servicesGroups = groupBy(parse.services,'DepartmentID');
         let posGroups = groupBy(parse.pos,'ServiceIDs');
         let invoicesGroups = groupBy(parse.invoices,'ServiceIDs');
+        let contactsGroups = groupBy(parse.contacts,'ServiceID');
         let notifyUsageGroups = groupBy(parse.notifyUsage,'service_id');
         
         forEach(products,(productObject,productId) => {
@@ -42,14 +43,16 @@ function processData(d,dict){
                 forEach(departmentServices,(serviceObject, serviceId) => {
                     let servicePos = keyBy(posGroups[serviceId], 'ID');
                     let serviceInvoices = keyBy(invoicesGroups[serviceId], 'ID');
+                    let serviceContacts = keyBy(contactsGroups[serviceId], 'ID');
                     let serviceUsage = keyBy(notifyUsageGroups[serviceId], 'ID');
-
+                    
                     treeObject[productId].departments[departmentId].services[serviceId] = 
                     { 
                         ...serviceObject, 
                         pos: servicePos, 
                         usage: serviceUsage,
-                        invoices: serviceInvoices
+                        invoices: serviceInvoices,
+                        contacts: serviceContacts
                     }
 
                 });

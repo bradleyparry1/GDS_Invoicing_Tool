@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
-import Alert from 'react-bootstrap/Alert'
-import Button from 'react-bootstrap/Button'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import UsageSection from '../components/UsageSection'
-import ServicesList from '../components/ServicesList'
-import AppContext from '../functions/AppContext'
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import ContactSection from '../components/ContactSection';
+import UsageSection from '../components/UsageSection';
+import PoSection from '../components/PoSection';
+import InvoiceSection from '../components/InvoiceSection';
+import ServicesList from '../components/ServicesList';
+import AppContext from './AppContext';
 
 function Department(){
     const { product, department, tree } = useContext(AppContext);
@@ -25,7 +27,7 @@ function Department(){
                 </Col>
                 <Col xs={2}>
                     <Button onClick={() => backToDepartmentList()}>
-                        Back
+                        {'< Back'}
                     </Button>
                 </Col>
             </Row>
@@ -34,24 +36,32 @@ function Department(){
                     <h1>{departmentData.DepartmentName}</h1>
                 </Col>
             </Row>
-            <Row>
-                <Col xs={4}>
+            <Row className={'mb-3'}>
+                <Col md={6}>
+                    <ContactSection
+                        department={departmentData}
+                    />
+                </Col>
+                <Col md={6}>
+                    <PoSection
+                        department={departmentData}
+                    />
+                </Col>
+                <Col md={6}>
                     <UsageSection
-                        usage={departmentData.usage}
-                        />
+                        department={departmentData}
+                    />
                 </Col>
-                <Col xs={4}>
-                    <Alert variant={'primary'}>
-                        POs
-                    </Alert>
-                </Col>
-                <Col xs={4}>
-                    <Alert variant={'success'}>
-                        Invoices
-                    </Alert>
+                <Col md={6}>
+                    <InvoiceSection
+                        department={departmentData}
+                    />
                 </Col>
             </Row>
-            <ServicesList services={departmentData.services} />
+            <ServicesList 
+                department={departmentData}
+            />
+
         </Container>
     )
 }

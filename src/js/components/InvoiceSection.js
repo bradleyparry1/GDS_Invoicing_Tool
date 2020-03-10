@@ -5,23 +5,17 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import map from 'lodash/map';
 
-import { calculateDepartmentUsageBillingTotal } from '../functions/departmentFunctions';
-import formatMoney from '../functions/utilities';
-
-function UsageSection(props) {
+function InvoiceSection(props) {
     const { department } = props;
+    const { invoices } = department;
 
     return (
-        <Alert variant={'danger'}>
+        <Alert variant={'success'}>
             <Container>
                 <Row>
                     <Col className='text-center'>
-                        <h5>Usage</h5>
+                        <h5>Invoices</h5>
                     </Col>
-                </Row>
-                <Row>
-                    <Col>{formatMoney(calculateDepartmentUsageBillingTotal(department))}</Col>
-                    <Col></Col>
                 </Row>
                 
 
@@ -30,4 +24,4 @@ function UsageSection(props) {
     )
 }
 
-export default UsageSection;
+export default InvoiceSection;

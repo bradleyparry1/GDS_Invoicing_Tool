@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AppContext from './js/functions/AppContext'
+import AppContext from './js/views/AppContext'
 import processData from './js/functions/dataProcessing'
 import Brand from './js/components/ui/Brand';
 import Flash from './js/components/ui/Flash';
