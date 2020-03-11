@@ -16,11 +16,13 @@ function processData(d,dict){
 
     const createTree = () => {
         let treeObject = {};
+
         let departmentsGroups = groupBy(parse.departments,'ProductID');
         let servicesGroups = groupBy(parse.services,'DepartmentID');
         let posGroups = groupBy(parse.pos,'ServiceIDs');
         let invoicesGroups = groupBy(parse.invoices,'ServiceIDs');
         let contactsGroups = groupBy(parse.contacts,'ServiceID');
+
         let notifyUsageGroups = groupBy(parse.notifyUsage,'service_id');
         
         forEach(products,(productObject,productId) => {
@@ -54,7 +56,6 @@ function processData(d,dict){
                         invoices: serviceInvoices,
                         contacts: serviceContacts
                     }
-
                 });
             });
         });

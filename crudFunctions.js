@@ -1,11 +1,16 @@
 //objDB library ID:
 // MJMF2lqsgWV-I-dlyqJN6OrljYCrJdQKl
 
-function crud(type,database,table,updateObject,criteria){
+//updateObject,criteria
+function crud(type,database,table,options){
     var db = objDB.open( getDatabaseId(database) );
 
     switch(type) {
-        case 'get':
+        case 'create':
+            const { updateObject } = options;
+            objDB.insertRow( db, table, updateObject );
+            return;
+        default:
             var rows = objDB.getRows( db, table);
             return JSON.stringify(rows);
     }
@@ -13,7 +18,7 @@ function crud(type,database,table,updateObject,criteria){
 
 const getDatabaseId = (database) => {
     switch(database){
-        case 'invoiceTool':
+        default:
             return invoicingId;
     }
 }

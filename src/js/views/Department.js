@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import ToActionTable from '../components/ForActionTable';
 import ContactSection from '../components/ContactSection';
 import UsageSection from '../components/UsageSection';
 import PoSection from '../components/PoSection';
@@ -22,10 +23,10 @@ function Department(){
     return (
         <Container>
             <Row className='mt-3 mb-3'>
-                <Col xs={10}>
+                <Col xs={8} md={10}>
                     <h3>{productData.ProductName}</h3>
                 </Col>
-                <Col xs={2}>
+                <Col xs={4} md={2}>
                     <Button onClick={() => backToDepartmentList()}>
                         {'< Back'}
                     </Button>
@@ -43,12 +44,12 @@ function Department(){
                     />
                 </Col>
                 <Col md={6}>
-                    <PoSection
+                    <UsageSection
                         department={departmentData}
                     />
                 </Col>
                 <Col md={6}>
-                    <UsageSection
+                    <PoSection
                         department={departmentData}
                     />
                 </Col>
@@ -58,10 +59,12 @@ function Department(){
                     />
                 </Col>
             </Row>
+            <ToActionTable
+                department={departmentData}
+            />
             <ServicesList 
                 department={departmentData}
             />
-
         </Container>
     )
 }

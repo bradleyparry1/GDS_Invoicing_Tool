@@ -317,3 +317,28 @@ margin-left: 20%;
   max-width: 100%;
   margin: 0px;
 }
+
+.summary-table {
+  border-radius: 10px;
+  border-left: #005ea5 1px solid;
+  border-right: #005ea5 1px solid;
+}
+
+.table-header{
+  color: #fff;
+  background-color: #005ea5;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.top-border{
+  border-top: #005ea5 1px solid;
+  border-bottom: #005ea5 1px solid;
+  background-color: #d6d8d9;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.action-window{
+  background-color: white;
+  border-radius: 10px;
+}
+

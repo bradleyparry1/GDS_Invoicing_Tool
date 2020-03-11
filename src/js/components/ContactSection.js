@@ -10,16 +10,17 @@ import { getDepartmentCharateristics } from '../functions/departmentFunctions';
 function UsageSection(props) {
     const { department } = props;
     const contacts = getDepartmentCharateristics(department,'contacts');
-    
-    console.log(contacts)
 
     return (
         <Alert variant={'dark'}>
             <Container>
                 <Row>
                     <Col className='text-center'>
-                        <h5>Contact</h5>
+                        <h4>Contacts</h4>
                     </Col>
+                </Row>
+                <Row>
+                    <Col><b>Email</b></Col>
                 </Row>
                 {map(contacts,(contact) => {
                     return (
