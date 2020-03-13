@@ -3,9 +3,10 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import ToActionTable from '../components/ForActionTable';
+import ForActionTable from '../components/ForActionTable';
 import ContactSection from '../components/ContactSection';
 import UsageSection from '../components/UsageSection';
+import OutstandingSection from '../components/OutstandingSection';
 import PoSection from '../components/PoSection';
 import InvoiceSection from '../components/InvoiceSection';
 import ServicesList from '../components/ServicesList';
@@ -38,13 +39,31 @@ function Department(){
                 </Col>
             </Row>
             <Row className={'mb-3'}>
-                <Col md={6}>
-                    <ContactSection
+                <Col md={4}>
+                    <UsageSection
                         department={departmentData}
                     />
                 </Col>
+                <Col md={4}>
+                    <InvoiceSection
+                        department={departmentData}
+                    />
+                </Col>
+
+                <Col md={4}>
+                    <OutstandingSection
+                        department={departmentData}
+                    />
+                </Col>
+            </Row>
+            <ForActionTable
+                department={departmentData}
+                tree={tree}
+                product={product}
+            />
+            <Row>
                 <Col md={6}>
-                    <UsageSection
+                    <ContactSection
                         department={departmentData}
                     />
                 </Col>
@@ -53,15 +72,7 @@ function Department(){
                         department={departmentData}
                     />
                 </Col>
-                <Col md={6}>
-                    <InvoiceSection
-                        department={departmentData}
-                    />
-                </Col>
             </Row>
-            <ToActionTable
-                department={departmentData}
-            />
             <ServicesList 
                 department={departmentData}
             />

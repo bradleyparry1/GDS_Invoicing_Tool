@@ -19,10 +19,10 @@ function processData(d,dict){
 
         let departmentsGroups = groupBy(parse.departments,'ProductID');
         let servicesGroups = groupBy(parse.services,'DepartmentID');
+        let invoicesGroups = groupBy(parse.invoices,'DepartmentID');
+        
         let posGroups = groupBy(parse.pos,'ServiceIDs');
-        let invoicesGroups = groupBy(parse.invoices,'ServiceIDs');
         let contactsGroups = groupBy(parse.contacts,'ServiceID');
-
         let notifyUsageGroups = groupBy(parse.notifyUsage,'service_id');
         
         forEach(products,(productObject,productId) => {
@@ -36,15 +36,18 @@ function processData(d,dict){
 
             forEach(productDepartments,(departmentObject,departmentId) => {
                 let departmentServices = keyBy(servicesGroups[departmentId], 'ID');
+                let departmentInvoices = keyBy(invoicesGroups[departmentId], 'ID');
+                
                 treeObject[productId].departments[departmentId] = 
                 { 
                     ...departmentObject, 
-                    services: departmentServices 
+                    services: departmentServices ,
+                    invoices: departmentInvoices
                 }
 
                 forEach(departmentServices,(serviceObject, serviceId) => {
                     let servicePos = keyBy(posGroups[serviceId], 'ID');
-                    let serviceInvoices = keyBy(invoicesGroups[serviceId], 'ID');
+                    //let serviceInvoices = keyBy(invoicesGroups[serviceId], 'ID');
                     let serviceContacts = keyBy(contactsGroups[serviceId], 'ID');
                     let serviceUsage = keyBy(notifyUsageGroups[serviceId], 'ID');
                     
@@ -53,7 +56,7 @@ function processData(d,dict){
                         ...serviceObject, 
                         pos: servicePos, 
                         usage: serviceUsage,
-                        invoices: serviceInvoices,
+                        //invoices: serviceInvoices,
                         contacts: serviceContacts
                     }
                 });

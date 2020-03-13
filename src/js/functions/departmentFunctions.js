@@ -3,21 +3,13 @@ import keys from 'lodash/keys';
 import values from 'lodash/values';
 
 function calculateDepartmentInvoiceQuantity(department){
-    const services = department.services;
-    return reduce(services,(total,service) => {
-        total += keys(service.invoices).length;
-        return total;
-    },0);
+    return keys(department.invoices).length;
 }
 
 function calculateDepartmentInvoiceValue(department){
-    const services = department.services;
-    return reduce(services,(total,service) => {
-        const invoices = service.invoices;
-        total += reduce(invoices,(subTotal,invoice) => {
-            subTotal += Number(invoice.Amount)
-            return subTotal;
-        },0);
+    const invoices = department.invoices;
+    return reduce(invoices,(total,invoice) => {
+        total += Number(invoice.Amount)
         return total;
     },0);
 }

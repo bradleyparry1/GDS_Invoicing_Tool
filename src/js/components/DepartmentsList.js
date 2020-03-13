@@ -1,52 +1,60 @@
 import React, { useContext } from 'react';
+import ReactTable from 'react-table-v6';
+import 'react-table-v6/react-table.css'
 import AppContext from '../views/AppContext';
 import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import map from 'lodash/map';
 import keys from 'lodash/keys';
-import {
-    calculateDepartmentUsageBillingTotal,
-    calculateDepartmentPoQuantity,
-    calculateDepartmentPoValue,
-    calculateDepartmentInvoiceQuantity,
-    calculateDepartmentInvoiceValue
-    } from '../functions/departmentFunctions';
-import formatMoney from '../functions/utilities'
+import values from 'lodash/values';
+import { calculateDepartmentUsageBillingTotal, calculateDepartmentInvoiceValue } from '../functions/departmentFunctions';
+import formatMoney from '../functions/utilities';
 
 function DepartmentsList() {
     const { tree, product, department } = useContext(AppContext);
     const currentDepartments = tree.value[product.value].departments;
+    const currentDepartmentsList = values(currentDepartments);
     
-    const viewDepartment = (departmentId) => {
-        department.updateFunction(departmentId);
-    }
+    const viewDepartment = departmentId => department.updateFunction(departmentId);
+
+    const columns = [{
+    Header: props => <span>Departments</span>,
+    accessor: 'DepartmentName',
+    Cell: props => <span onClick={() => viewDepartment(props.original.ID)}>{props.value}</span> ,
+    filterable: true,
+    filterMethod: (filter, row) => row.DepartmentName.toLowerCase().indexOf(filter.value.toLowerCase()) !== -1,
+    className: 'word-wrap btn btn-link',
+    width: 390
+    }, {
+    id: 'departmentServices',
+    Header: 'Number of Services',
+    accessor: department => keys(department.services).length,
+    className: 'text-center'
+    }, {
+    id: 'departmentTotalBillingAmount',
+    Header: 'Total Amount To Bill',
+    accessor: department => calculateDepartmentUsageBillingTotal(department),
+    Cell: props => <span>{formatMoney(props.value)}</span> ,
+    className: 'text-center'
+    }, {
+    id: 'departmentTotalInvoicedAmount',
+    Header: 'Total Amount Invoiced',
+    accessor: department => calculateDepartmentInvoiceValue(department),
+    Cell: props => <span>{formatMoney(props.value)}</span> ,
+    className: 'text-center'
+    }, {
+    id: 'departmentTotalOutstandingAmount',
+    Header: 'Total Amount Outstanding',
+    accessor: department => calculateDepartmentUsageBillingTotal(department) - calculateDepartmentInvoiceValue(department),
+    Cell: props => <span className={props.value > 0 ? 'red' : 'green'}>{formatMoney(props.value)}</span> ,
+    className: 'text-center'
+    }]
 
     return (
-        <Container>
-            {map(currentDepartments,(department) => {
-                const billingAmount = calculateDepartmentUsageBillingTotal(department);
-                const invoiceAmount = calculateDepartmentInvoiceValue(department);
-                const outstanding = billingAmount - invoiceAmount;
-                return (
-                    <Row>
-                        <Col xs={3}>
-                            <Button variant='link' onClick={() => viewDepartment(department.ID)}>
-                                {department.DepartmentName}
-                            </Button>
-                        </Col>
-                        <Col>{keys(department.services).length}</Col>
-                        <Col>{calculateDepartmentPoQuantity(department)}</Col>
-                        <Col>{formatMoney(calculateDepartmentPoValue(department))}</Col>
-                        <Col>{formatMoney(billingAmount)}</Col>
-                        <Col>{calculateDepartmentInvoiceQuantity(department)}</Col>
-                        <Col>{formatMoney(invoiceAmount)}</Col>
-                        <Col>{formatMoney(outstanding)}</Col>
-                    </Row>
-                )
-            })}
-        </Container>
+        <ReactTable
+        data={currentDepartmentsList}
+        columns={columns}
+        defaultSorted={[{id: 'departmentTotalOutstandingAmount', desc: true}]}
+        resizable={false}
+      />
     )
 }
 

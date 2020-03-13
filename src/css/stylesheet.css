@@ -342,3 +342,34 @@ margin-left: 20%;
   border-radius: 10px;
 }
 
+.word-wrap {
+  display: flex!important;
+  flex-direction: column!important;
+  white-space: unset!important;
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.ReactTable .rt-thead .rt-th {
+  white-space: pre-wrap;
+  text-align: center!important;
+}
+
+.rt-th > div{
+  text-align: center!important;
+}
+
+.department-col{
+  width:40%!important;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}

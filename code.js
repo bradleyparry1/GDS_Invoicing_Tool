@@ -33,6 +33,8 @@ function getData(){
     return JSON.stringify({products, departments, services, pos, invoices, contacts, notifyUsage});
 }
 
+
+
 function createPermissionsDict(){
     var data = SpreadsheetApp.openById(invoicingId)
                              .getSheetByName("Permissions").getDataRange().getValues();
@@ -41,7 +43,7 @@ function createPermissionsDict(){
     for(var i = 1; i < data.length; i++){
         dict[data[i][0]] = {};
         for(var j = 1; j < titles.length; j++){
-        dict[data[i][0]][titles[j]] = data[i][j];
+            dict[data[i][0]][titles[j]] = data[i][j];
         }
     }
     return dict;

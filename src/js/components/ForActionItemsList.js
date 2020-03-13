@@ -12,7 +12,7 @@ function ForActionsItemsList(props){
         <Container className='action-window'>
             {map(usage,(usageItem) => {
                 return (
-                    <Row>
+                    <Row key={usageItem.ID}>
                         <Col>{usageItem.Period}</Col>
                         <Col>{usageItem.service_name}</Col>
                         <Col>{formatMoney(usageItem.totalcost)}</Col>

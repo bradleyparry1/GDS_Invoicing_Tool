@@ -39,7 +39,8 @@ module.exports = {
         'crudFunctions.js',
         'urls.js',
         'appsscript.json',
-        '.clasp.json'
+        '.clasp.json',
+        'invoice_email.html'
     ])
   ]
 };
