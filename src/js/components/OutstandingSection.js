@@ -1,9 +1,5 @@
 import React from 'react';
-import Alert from 'react-bootstrap/Alert'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-
+import Scorecard from './Scorecard';
 import { 
     calculateDepartmentUsageBillingTotal,
     calculateDepartmentInvoiceValue
@@ -18,18 +14,11 @@ function OutstandingSection(props) {
     const outstanding = billingAmount - invoiceAmount;
 
     return (
-        <Alert variant={outstanding === 0 ? 'success' : 'danger'}>
-            <Container>
-                <Row>
-                    <Col className='text-center'>
-                        <h5>Outstanding Amount</h5>
-                    </Col>
-                </Row>
-                <Row className='text-center'>
-                    <Col>{formatMoney(outstanding)}</Col>
-                </Row>
-            </Container>
-        </Alert>
+        <Scorecard 
+            variant={outstanding === 0 ? 'success' : 'danger'}
+            title={"Outstanding Amount"}
+            value={formatMoney(outstanding)}
+        />
     )
 }
 

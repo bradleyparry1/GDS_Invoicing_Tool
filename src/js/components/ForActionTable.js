@@ -27,6 +27,8 @@ function ForActionTable(props) {
     const [invoiceContact,setInvoiceContact] = useState(contacts[0] ? contacts[0].ID : "");
     const [invoicePo,setInvoicePo] = useState(pos[0] ? pos[0].ID : "");
     const [invoiceAmount,setInvoiceAmount] = useState(0);
+
+    const [submitting,setSubmitting] = useState(false);
     
     useEffect(() => {
         updateInvoiceAmount();
@@ -69,6 +71,7 @@ function ForActionTable(props) {
     }
 
     const createInvoice = () => {
+        setSubmitting(true)
         const newId = uuidv4();
         const newInvoice = {
             ID: newId,
@@ -98,8 +101,11 @@ function ForActionTable(props) {
             })
 
             tree.updateFunction(newTree);
+            setInvoiceUsageItems({});
+            setSubmitting(false);
         }).withFailureHandler((msg) => {
             alert(msg);
+            setSubmitting(false)
         }).createInvoice(newInvoice,usageItemUpdateObject,invoiceContact);
         
 
@@ -126,12 +132,15 @@ function ForActionTable(props) {
                             invoiceAmount={invoiceAmount}
                             createInvoice={createInvoice}
                             invoicePeriod={invoicePeriod}
+                            submitting={submitting}
+                            invoiceUsageItemKeys={keys(invoiceUsageItems)}
                         />
                         <Row>
                             <Col>
                                 <ForActionsItemsList 
                                     usage={usage} 
                                     updateInvoice={updateInvoiceItems}
+                                    submitting={submitting}
                                 />
                             </Col>
                         </Row>

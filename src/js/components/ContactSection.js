@@ -5,6 +5,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import map from 'lodash/map';
 
+import Contact from './Contact';
+
 import { getDepartmentCharateristics } from '../functions/departmentFunctions';
 
 function UsageSection(props) {
@@ -19,13 +21,10 @@ function UsageSection(props) {
                         <h4>Contacts</h4>
                     </Col>
                 </Row>
-                <Row>
-                    <Col><b>Email</b></Col>
-                </Row>
                 {map(contacts,(contact) => {
                     return (
                         <Row>
-                            <Col>{contact.Email}</Col>
+                            <Contact contact={contact} />
                         </Row>
                     )
                 })}

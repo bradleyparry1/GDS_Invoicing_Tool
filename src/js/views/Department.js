@@ -38,7 +38,7 @@ function Department(){
                     <h1>{departmentData.DepartmentName}</h1>
                 </Col>
             </Row>
-            <Row className={'mb-3'}>
+            <Row>
                 <Col md={4}>
                     <UsageSection
                         department={departmentData}

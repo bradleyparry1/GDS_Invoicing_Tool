@@ -7,7 +7,7 @@ import map from 'lodash/map';
 import formatMoney from '../functions/utilities';
 
 function ForActionsItemsList(props){
-    const { usage, updateInvoice } = props;
+    const { usage, updateInvoice, submitting } = props;
     return (
         <Container className='action-window'>
             {map(usage,(usageItem) => {
@@ -23,6 +23,7 @@ function ForActionsItemsList(props){
                                         onClick={(e) => updateInvoice(e,usageItem)} 
                                         type="checkbox" 
                                         label="Include in invoice" 
+                                        disabled={submitting}
                                     />
                                 </Form.Group>
                             }
