@@ -4,14 +4,19 @@
 //updateObject,criteria
 function crud(type,database,table,options){
     var db = options.db ? options.db : objDB.open( getDatabaseId(database) );
+    const { updateObject, criteriaObject, massUpdateObject } = options;
 
     switch(type) {
         case 'create':
-            const { updateObject } = options;
             objDB.insertRow( db, table, updateObject );
             return;
+        case 'update':
+            objDB.updateRow( db, table, updateObject, criteriaObject );
+            return;
+        case 'delete':
+            objDB.deleteRow( db, table, criteriaObject );
+            return;
         case 'massUpdate':
-            const { massUpdateObject } = options;
             for(var update in massUpdateObject){
                 objDB.updateRow( db, table, massUpdateObject[update].update, massUpdateObject[update].criteria );
             }

@@ -5,18 +5,17 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import map from 'lodash/map';
 import formatMoney from '../functions/utilities';
-import { getDepartmentCharateristics } from '../functions/departmentFunctions';
 
 function PoSection(props) {
     const { department } = props;
-    const pos = getDepartmentCharateristics(department,'pos');
+    const pos = department.pos;
 
     return (
         <Alert variant={'primary'}>
             <Container>
                 <Row>
                     <Col className='text-center'>
-                        <h5>POs</h5>
+                        <h4>POs</h4>
                     </Col>
                 </Row>
                 {map(pos,(po) => {

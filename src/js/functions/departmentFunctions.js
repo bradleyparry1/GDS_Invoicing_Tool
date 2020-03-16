@@ -52,7 +52,7 @@ function getDepartmentCharateristics(department,characteristic){
         const characteristicList = values(service[characteristic]);
         returnList = returnList.concat(characteristicList);
         return returnList;
-    },[])
+    },[]);
 }
 
 export {

@@ -5,17 +5,21 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ForActionTable from '../components/ForActionTable';
 import ContactSection from '../components/ContactSection';
-import UsageSection from '../components/UsageSection';
-import OutstandingSection from '../components/OutstandingSection';
+import Scorecard from '../components/Scorecard';
 import PoSection from '../components/PoSection';
-import InvoiceSection from '../components/InvoiceSection';
 import ServicesList from '../components/ServicesList';
 import AppContext from './AppContext';
+import { calculateDepartmentUsageBillingTotal, calculateDepartmentInvoiceValue } from '../functions/departmentFunctions';
+import formatMoney from '../functions/utilities';
 
 function Department(){
     const { product, department, tree } = useContext(AppContext);
     const productData = tree.value[product.value];
     const departmentData = tree.value[product.value].departments[department.value];
+    
+    const billingAmount = calculateDepartmentUsageBillingTotal(departmentData);
+    const invoiceAmount = calculateDepartmentInvoiceValue(departmentData);
+    const outstanding = billingAmount - invoiceAmount;
 
     const backToDepartmentList = () => {
         department.updateFunction(null);
@@ -40,19 +44,25 @@ function Department(){
             </Row>
             <Row>
                 <Col md={4}>
-                    <UsageSection
-                        department={departmentData}
+                    <Scorecard 
+                        variant={'dark'}
+                        title={"Total Amount To Bill"}
+                        value={formatMoney(billingAmount)}
                     />
                 </Col>
                 <Col md={4}>
-                    <InvoiceSection
-                        department={departmentData}
+                    <Scorecard 
+                        variant={'success'}
+                        title={"Total Amount Invoiced"}
+                        value={formatMoney(invoiceAmount)}
                     />
                 </Col>
 
                 <Col md={4}>
-                    <OutstandingSection
-                        department={departmentData}
+                    <Scorecard 
+                        variant={outstanding === 0 ? 'success' : 'danger'}
+                        title={"Outstanding Amount"}
+                        value={formatMoney(outstanding)}
                     />
                 </Col>
             </Row>
@@ -65,6 +75,8 @@ function Department(){
                 <Col md={6}>
                     <ContactSection
                         department={departmentData}
+                        tree={tree}
+                        product={product}
                     />
                 </Col>
                 <Col md={6}>

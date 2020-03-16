@@ -17,8 +17,8 @@ function ForActionTable(props) {
     const usage = getDepartmentCharateristics(department,'usage').filter((usageItem) => {
         return !usageItem.InvoiceID && usageItem.totalcost > 0;
     });
-    const contacts = getDepartmentCharateristics(department,'contacts');
-    const pos = getDepartmentCharateristics(department,'pos');
+    const contacts = department.contacts;
+    const pos = department.pos;
     
     const [invoiceUsageItems, setInvoiceUsageItems] = useState({});
 
@@ -107,9 +107,6 @@ function ForActionTable(props) {
             alert(msg);
             setSubmitting(false)
         }).createInvoice(newInvoice,usageItemUpdateObject,invoiceContact);
-        
-
-        //{'1': {update: {"InvoiceID": "test"}, criteria: {"ID": "2"}}}};
     }
 
     return (

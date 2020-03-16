@@ -5,8 +5,7 @@ import keys from 'lodash/keys';
 
 function processData(d,dict){
     let parse = JSON.parse(d);
-    
-    //const notifyUsage = keyBy(parse.notifyUsage, 'ID');
+
     const products = keyBy(parse.products, 'ID');
     const departments = keyBy(parse.departments, 'ID');
     const services = keyBy(parse.services, 'ID');
@@ -20,9 +19,9 @@ function processData(d,dict){
         let departmentsGroups = groupBy(parse.departments,'ProductID');
         let servicesGroups = groupBy(parse.services,'DepartmentID');
         let invoicesGroups = groupBy(parse.invoices,'DepartmentID');
+        let contactsGroups = groupBy(parse.contacts,'DepartmentID');
+        let posGroups = groupBy(parse.pos,'DepartmentID');
         
-        let posGroups = groupBy(parse.pos,'ServiceIDs');
-        let contactsGroups = groupBy(parse.contacts,'ServiceID');
         let notifyUsageGroups = groupBy(parse.notifyUsage,'service_id');
         
         forEach(products,(productObject,productId) => {
@@ -37,27 +36,27 @@ function processData(d,dict){
             forEach(productDepartments,(departmentObject,departmentId) => {
                 let departmentServices = keyBy(servicesGroups[departmentId], 'ID');
                 let departmentInvoices = keyBy(invoicesGroups[departmentId], 'ID');
+                let departmentContacts = keyBy(contactsGroups[departmentId], 'ID');
+                let departmentPos = keyBy(posGroups[departmentId], 'ID');
                 
                 treeObject[productId].departments[departmentId] = 
                 { 
                     ...departmentObject, 
                     services: departmentServices ,
-                    invoices: departmentInvoices
+                    invoices: departmentInvoices,
+                    contacts: departmentContacts,
+                    pos: departmentPos
                 }
 
                 forEach(departmentServices,(serviceObject, serviceId) => {
-                    let servicePos = keyBy(posGroups[serviceId], 'ID');
-                    //let serviceInvoices = keyBy(invoicesGroups[serviceId], 'ID');
-                    let serviceContacts = keyBy(contactsGroups[serviceId], 'ID');
+                    //let servicePos = keyBy(posGroups[serviceId], 'ID');
                     let serviceUsage = keyBy(notifyUsageGroups[serviceId], 'ID');
                     
                     treeObject[productId].departments[departmentId].services[serviceId] = 
                     { 
                         ...serviceObject, 
-                        pos: servicePos, 
+                        //pos: servicePos, 
                         usage: serviceUsage,
-                        //invoices: serviceInvoices,
-                        contacts: serviceContacts
                     }
                 });
             });

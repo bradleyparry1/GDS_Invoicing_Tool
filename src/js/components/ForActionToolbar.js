@@ -15,7 +15,7 @@ function ForActionToolbar(props){
                     <InvoiceCharacteristicSelect 
                         characteristic={'Contact'} 
                         options={contacts} 
-                        displayCharacteristic={'Email'} 
+                        displayCharacteristic={'ContactName'} 
                         updateFunction={setInvoiceContact} 
                     />
                 </Col>

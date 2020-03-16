@@ -377,3 +377,12 @@ margin-left: 20%;
 .scorecard {
   font-size: 2em;
 }
+
+.full-width {
+  width: 100%;
+}
+
+.contact {
+  padding: 5px 0px;
+  border-top: #c6c8ca solid 1px;
+}

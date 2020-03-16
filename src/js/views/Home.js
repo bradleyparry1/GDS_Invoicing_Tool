@@ -3,9 +3,10 @@ import AppContext from './AppContext'
 import ToolbarSection from '../components/ui/ToolbarSection';
 import DepartmentsTable from '../components/DepartmentsList';
 import ProductSelect from '../components/ProductSelect';
-import ProgressBar from 'react-bootstrap/ProgressBar'
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import DepartmentStats from '../components/DepartmentStats';
 
-function Home(props){
+function Home(){
     const { loading } = useContext(AppContext);
     return (
         <div id='display'>
@@ -16,6 +17,7 @@ function Home(props){
                 <>
                     <ToolbarSection>
                         <ProductSelect />
+                        <DepartmentStats />
                     </ToolbarSection>
                     <DepartmentsTable />
                 </>
