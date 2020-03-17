@@ -14,8 +14,8 @@ function InvoiceCharacteristicSelect(props){
 
     return (
         <Form.Group as={Row}>
-            <Form.Label column sm={4}>{characteristic}</Form.Label>
-            <Col sm={8}>
+            <Form.Label column sm={3}><b>{characteristic}:</b></Form.Label>
+            <Col sm={9}>
                 <Form.Control as="select" onClick={update}>
                     {map(options,(option) => {
                         return <option value={option.ID}>{option[displayCharacteristic]}</option>

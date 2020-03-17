@@ -10,8 +10,8 @@ function ForActionToolbar(props){
     const { contacts, setInvoiceContact, pos, setInvoicePo, invoiceAmount, createInvoice, invoicePeriod, submitting, invoiceUsageItemKeys } = props;
     return (
         <>
-            <Row>
-                <Col>
+            <Row className='mt-3'>
+                <Col lg='4'>
                     <InvoiceCharacteristicSelect 
                         characteristic={'Contact'} 
                         options={contacts} 
@@ -19,7 +19,7 @@ function ForActionToolbar(props){
                         updateFunction={setInvoiceContact} 
                     />
                 </Col>
-                <Col>
+                <Col lg='3'>
                     <InvoiceCharacteristicSelect 
                         characteristic={'PO'} 
                         options={pos} 
@@ -27,9 +27,14 @@ function ForActionToolbar(props){
                         updateFunction={setInvoicePo} 
                     />
                 </Col>
-                <Col>{formatMoney(invoiceAmount)}</Col>
-                <Col>
-                    <Button onClick={createInvoice} disabled={submitting || invoiceUsageItemKeys.length === 0}>
+                <Col lg='3' className='col-form-label'><b>Invoice Amount:</b></Col>
+                <Col lg='2' className='col-form-label'>{formatMoney(invoiceAmount)}</Col>
+            </Row>
+            <Row >
+                <Col xs={2} className='col-form-label'><b>Period:</b></Col>
+                <Col xs={6} className='col-form-label'>{invoicePeriod.join(", ")}</Col>
+                <Col xs={4}>
+                    <Button className='full-width' onClick={createInvoice} disabled={submitting || invoiceUsageItemKeys.length === 0}>
                         {submitting ? 
                             <>
                                 <Spinner animation="border" variant="light" size="sm"/>
@@ -38,10 +43,6 @@ function ForActionToolbar(props){
                          : "Create Invoice"}
                     </Button>
                 </Col>
-            </Row>
-            <Row>
-                <Col xs={2}>Period:</Col>
-                <Col xs={10}>{invoicePeriod.join(", ")}</Col>
             </Row>
         </>
     )

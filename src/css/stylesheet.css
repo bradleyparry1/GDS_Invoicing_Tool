@@ -340,6 +340,8 @@ margin-left: 20%;
 .action-window{
   background-color: white;
   border-radius: 10px;
+  border: #f5c6cb 1px solid;
+  padding: 5px;
 }
 
 .word-wrap {
@@ -385,4 +387,13 @@ margin-left: 20%;
 .contact {
   padding: 5px 0px;
   border-top: #c6c8ca solid 1px;
+}
+
+.po {
+  padding: 5px 0px;
+  border-top: #b8daff solid 1px;
+}
+
+form > .row {
+  margin: 0px;
 }

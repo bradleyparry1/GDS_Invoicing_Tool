@@ -15,7 +15,8 @@ function doGet(e) {
     if(permissions[user]){
         return template.evaluate()
             .setTitle('Invoicing Tool')
-            .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+            .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+            .setFaviconUrl('https://pbs.twimg.com/profile_images/1148151001750392832/vt5LEU1l_400x400.png');
     }
 }
 

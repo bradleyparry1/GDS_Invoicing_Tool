@@ -121,6 +121,15 @@ function ForActionTable(props) {
                                 <h4>For Action</h4>
                             </Col>
                         </Row>
+                        <Row>
+                            <Col>
+                                <ForActionsItemsList 
+                                    usage={usage} 
+                                    updateInvoice={updateInvoiceItems}
+                                    submitting={submitting}
+                                />
+                            </Col>
+                        </Row>
                         <ForActionToolbar 
                             contacts={contacts} 
                             setInvoiceContact={setInvoiceContact}
@@ -132,15 +141,6 @@ function ForActionTable(props) {
                             submitting={submitting}
                             invoiceUsageItemKeys={keys(invoiceUsageItems)}
                         />
-                        <Row>
-                            <Col>
-                                <ForActionsItemsList 
-                                    usage={usage} 
-                                    updateInvoice={updateInvoiceItems}
-                                    submitting={submitting}
-                                />
-                            </Col>
-                        </Row>
                     </Container>
                 </Alert>
             </Col> : ''}

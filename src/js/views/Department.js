@@ -7,6 +7,7 @@ import ForActionTable from '../components/ForActionTable';
 import ContactSection from '../components/ContactSection';
 import Scorecard from '../components/Scorecard';
 import PoSection from '../components/PoSection';
+import InvoiceSection from '../components/InvoiceSection';
 import ServicesList from '../components/ServicesList';
 import AppContext from './AppContext';
 import { calculateDepartmentUsageBillingTotal, calculateDepartmentInvoiceValue } from '../functions/departmentFunctions';
@@ -72,22 +73,38 @@ function Department(){
                 product={product}
             />
             <Row>
-                <Col md={6}>
+                <Col lg={6}>
                     <ContactSection
                         department={departmentData}
                         tree={tree}
                         product={product}
                     />
-                </Col>
-                <Col md={6}>
-                    <PoSection
+                    <ServicesList 
                         department={departmentData}
                     />
                 </Col>
+                <Col lg={6}>
+                    <PoSection
+                        department={departmentData}
+                        tree={tree}
+                        product={product}
+                    />
+                    <InvoiceSection
+                        department={departmentData}
+                        tree={tree}
+                        product={product}
+                    />
+                </Col>
             </Row>
-            <ServicesList 
-                department={departmentData}
-            />
+            <Row>
+                <Col lg={6}>
+                    
+                </Col>
+                <Col lg={6}>
+                    
+                </Col>
+            </Row>
+            
         </Container>
     )
 }
