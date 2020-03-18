@@ -32,7 +32,7 @@ function UsageSection(props) {
     }
 
     return (
-        <Alert variant={'dark'}>
+        <Alert variant={'info'}>
             <Container>
                 <Row>
                     <Col className='text-center'>

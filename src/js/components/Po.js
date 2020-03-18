@@ -6,12 +6,14 @@ import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import { v4 as uuidv4 } from 'uuid';
+import ServiceSelect from './ServiceSelect';
+
 
 function Po(props){
-    const { po, departmentId, updatePo, deletePo, setShowNewForm } = props;
+    const { po, departmentId, updatePo, deletePo, setShowNewForm, services } = props;
     const [editMode, setEditMode] = useState(props.new);
     const [submitting, setSubmitting] = useState(false);
-
+    
     const editPo = () => {
         setEditMode(!editMode);
         if(props.new){
@@ -38,12 +40,17 @@ function Po(props){
         event.stopPropagation();
         setSubmitting(true)
         const form = event.currentTarget;
-        const updateObject = {};
+        const updateObject = { ServiceIDs: [] };
         for(var i = 0; i < form.length - 1; i++){
             if(form[i].name){
-                updateObject[form[i].name] = form[i].value;
+                if(form[i].name === "ServiceIDs"){
+                    updateObject[form[i].name].push(form[i].value);
+                } else {
+                    updateObject[form[i].name] = form[i].value;
+                }
             }
         }
+        updateObject.ServiceIDs = JSON.stringify(updateObject.ServiceIDs);
 
         const options = {
             updateObject
@@ -90,6 +97,20 @@ function Po(props){
                     <Button variant="secondary" size="sm" onClick={editPo} className='full-width'>
                         {editMode ? "Cancel" : "Edit"}
                     </Button>
+                </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} controlId="ponumber">
+                <Form.Label column sm="4">
+                    <b>Services:</b>
+                </Form.Label>
+                <Col sm="8">
+                    <ServiceSelect 
+                        editMode={editMode} 
+                        submitting={submitting} 
+                        services={services} 
+                        value={po.ServiceIDs}
+                    />
                 </Col>
             </Form.Group>
 

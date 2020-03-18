@@ -9,7 +9,7 @@ import map from 'lodash/map';
 
 function PoSection(props) {
     const { department, tree, product } = props;
-    const { pos } = department;
+    const { pos, services } = department;
 
     const [showNewForm, setShowNewForm] = useState(false);
 
@@ -48,6 +48,7 @@ function PoSection(props) {
                             updatePo={updatePo} 
                             deletePo={deletePo} 
                             setShowNewForm={setShowNewForm}
+                            services={services}
                         />
                     )
                 })}
@@ -59,6 +60,7 @@ function PoSection(props) {
                     updatePo={updatePo} 
                     deletePo={deletePo} 
                     setShowNewForm={setShowNewForm}
+                    services={services}
                 />
                 :
                     <Row className='po'>

@@ -30,7 +30,7 @@ function ForActionToolbar(props){
                 <Col lg='3' className='col-form-label'><b>Invoice Amount:</b></Col>
                 <Col lg='2' className='col-form-label'>{formatMoney(invoiceAmount)}</Col>
             </Row>
-            <Row >
+            <Row className='for-action-group-bottom'>
                 <Col xs={2} className='col-form-label'><b>Period:</b></Col>
                 <Col xs={6} className='col-form-label'>{invoicePeriod.join(", ")}</Col>
                 <Col xs={4}>
