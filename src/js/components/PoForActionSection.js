@@ -49,7 +49,7 @@ function PoForActionSection(props){
             !periodArray.includes(usageItem.Period) && periodArray.push(usageItem.Period)
             return periodArray;
         },[]);
-        setInvoicePeriod(newPeriodArray);
+        setInvoicePeriod(newPeriodArray.sort());
     }
 
     const updateInvoiceServiceIds = () => {
@@ -70,7 +70,7 @@ function PoForActionSection(props){
             POID: invoicePo,
             InvoiceNumber: "",
             Amount: invoiceAmount,
-            Months: JSON.stringify(invoicePeriod)
+            Periods: JSON.stringify(invoicePeriod)
         }
 
         const usageItemUpdateObject = reduce(invoiceUsageItems, (returnObject,invoiceUsageItem) => {

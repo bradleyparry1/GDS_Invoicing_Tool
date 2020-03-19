@@ -59,6 +59,7 @@ function Invoice(props){
             options.updateObject.DepartmentID = departmentId;
         }
 
+        options.updateObject.Periods = JSON.stringify(options.updateObject.Periods.split(", "));
         const type = props.new ? 'create' : 'update';
 
         google.script.run.withSuccessHandler(() => {
@@ -73,7 +74,7 @@ function Invoice(props){
 
     return (
         <Form onSubmit={handleSubmit} className='invoice'>
-            <Form.Group as={Row} controlId="invoicenumber">
+            <Form.Group as={Row} controlId={`invoicenumber${invoice.ID}`}>
                 <Form.Label column sm="4">
                     <b>Invoice Number:</b>
                 </Form.Label>
@@ -87,23 +88,38 @@ function Invoice(props){
                     />
                 </Col>
                 <Col sm="3">
-                    <Button variant="secondary" size="sm" onClick={editInvoice} className='full-width'>
+                    <Button variant="secondary" size="sm" onClick={editInvoice} className='full-width' disabled={submitting}>
                         {editMode ? "Cancel" : "Edit"}
                     </Button>
                 </Col>
             </Form.Group>
 
-            <Form.Group as={Row} controlId="amount">
+            <Form.Group as={Row} controlId={`amount${invoice.ID}`}>
                 <Form.Label column sm="4">
-                    <b>Amount:</b>
+                    <b>Amount (£):</b>
                 </Form.Label>
                 <Col sm="8">
                     <Form.Control 
                         name="Amount"
-                        plaintext={!editMode || submitting} 
-                        readOnly={!editMode || submitting} 
+                        plaintext={true} 
+                        readOnly={true} 
                         placeholder="Amount" 
                         defaultValue={invoice.Amount} 
+                    />
+                </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} controlId={`period${invoice.ID}`}>
+                <Form.Label column sm="4">
+                    <b>Period:</b>
+                </Form.Label>
+                <Col sm="8">
+                    <Form.Control 
+                        name="Periods"
+                        plaintext={true} 
+                        readOnly={true} 
+                        placeholder="Period" 
+                        defaultValue={invoice.Periods ? JSON.parse(invoice.Periods).join(", ") : ''} 
                     />
                 </Col>
             </Form.Group>

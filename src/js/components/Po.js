@@ -27,6 +27,7 @@ function Po(props){
             google.script.run.withSuccessHandler(() => {
                 deletePo(po.ID);
                 setSubmitting(false);
+                setEditMode(false);
             }).withFailureHandler((msg) => {
                 alert(msg);
                 setSubmitting(false)
@@ -80,7 +81,7 @@ function Po(props){
 
     return (
         <Form onSubmit={handleSubmit} className='po'>
-            <Form.Group as={Row} controlId="ponumber">
+            <Form.Group as={Row} controlId={`ponumber${po.ID}`}>
                 <Form.Label column sm="4">
                     <b>PO Number:</b>
                 </Form.Label>
@@ -94,13 +95,13 @@ function Po(props){
                     />
                 </Col>
                 <Col sm="3">
-                    <Button variant="secondary" size="sm" onClick={editPo} className='full-width'>
+                    <Button variant="secondary" size="sm" onClick={editPo} className='full-width' disabled={submitting}>
                         {editMode ? "Cancel" : "Edit"}
                     </Button>
                 </Col>
             </Form.Group>
 
-            <Form.Group as={Row} controlId="ponumber">
+            <Form.Group as={Row} controlId={`services${po.ID}`}>
                 <Form.Label column sm="4">
                     <b>Services:</b>
                 </Form.Label>
@@ -114,9 +115,9 @@ function Po(props){
                 </Col>
             </Form.Group>
 
-            <Form.Group as={Row} controlId="amount">
+            <Form.Group as={Row} controlId={`amount${po.ID}`}>
                 <Form.Label column sm="4">
-                    <b>Amount:</b>
+                    <b>Amount (£):</b>
                 </Form.Label>
                 <Col sm="8">
                     <Form.Control 
@@ -129,7 +130,7 @@ function Po(props){
                 </Col>
             </Form.Group>
 
-            <Form.Group as={Row} controlId="StartDate">
+            <Form.Group as={Row} controlId={`StartDate${po.ID}`}>
                 <Form.Label column sm="4">
                     <b>Start Date:</b>
                 </Form.Label>
@@ -145,7 +146,7 @@ function Po(props){
                 </Col>
             </Form.Group>
 
-            <Form.Group as={Row} controlId="EndDate">
+            <Form.Group as={Row} controlId={`EndDate${po.ID}`}>
                 <Form.Label column sm="4">
                     <b>End Date:</b>
                 </Form.Label>

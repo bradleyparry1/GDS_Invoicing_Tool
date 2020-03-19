@@ -411,3 +411,12 @@ margin-left: 20%;
 form > .row {
   margin: 0px;
 }
+
+.usage-window {
+  background-color: white;
+  border-radius: 10px;
+  border: #d6d8db 1px solid;
+  padding: 5px;
+  max-height: 300px;
+  overflow-y: auto;
+}

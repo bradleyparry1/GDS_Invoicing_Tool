@@ -25,6 +25,7 @@ function Contact(props){
             google.script.run.withSuccessHandler(() => {
                 deleteContact(contact.ID);
                 setSubmitting(false);
+                setEditMode(false);
             }).withFailureHandler((msg) => {
                 alert(msg);
                 setSubmitting(false);
@@ -72,7 +73,7 @@ function Contact(props){
 
     return (
         <Form onSubmit={handleSubmit} className='contact'>
-            <Form.Group as={Row} controlId="name">
+            <Form.Group as={Row} controlId={`name${contact.ID}`}>
                 <Form.Label column sm="3">
                     <b>Name:</b>
                 </Form.Label>
@@ -86,13 +87,13 @@ function Contact(props){
                     />
                 </Col>
                 <Col sm="3">
-                    <Button variant="secondary" size="sm" onClick={editContact} className='full-width'>
+                    <Button variant="secondary" size="sm" onClick={editContact} className='full-width' disabled={submitting}>
                         {editMode ? "Cancel" : "Edit"}
                     </Button>
                 </Col>
             </Form.Group>
 
-            <Form.Group as={Row} controlId="email">
+            <Form.Group as={Row} controlId={`email${contact.ID}`}>
                 <Form.Label column sm="3">
                     <b>Email:</b>
                 </Form.Label>
@@ -107,7 +108,7 @@ function Contact(props){
                 </Col>
             </Form.Group>
 
-            <Form.Group as={Row} controlId="address">
+            <Form.Group as={Row} controlId={`address${contact.ID}`}>
                 <Form.Label column sm="3">
                     <b>Address:</b>
                 </Form.Label>
