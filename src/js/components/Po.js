@@ -90,7 +90,7 @@ function Po(props){
                         name="PONumber"
                         plaintext={!editMode || submitting} 
                         readOnly={!editMode || submitting} 
-                        placeholder="PO Number" 
+                        placeholder="Missing" 
                         defaultValue={po.PONumber} 
                     />
                 </Col>

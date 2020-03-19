@@ -130,6 +130,7 @@ function PoForActionSection(props){
                         invoicePeriod={invoicePeriod}
                         submitting={submitting}
                         invoiceUsageItemKeys={keys(invoiceUsageItems)}
+                        invoiceContact={invoiceContact}
                     />
                 </>
             : ''}

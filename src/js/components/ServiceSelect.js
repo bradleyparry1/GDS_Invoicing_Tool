@@ -37,7 +37,7 @@ function ServiceSelect(props){
             {!editMode || submitting ? 
                 map(selectValue,(option) => {
                     return (<>
-                        <span>{option.label}</span><br/>
+                        <span className='fake-input'>{option.label}</span><br/>
                     </>);
                 })
             :

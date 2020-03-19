@@ -7,7 +7,27 @@ import InvoiceCharacteristicSelect from './InvoiceCharacteristicSelect';
 import formatMoney from '../functions/utilities';
 
 function ForActionToolbar(props){
-    const { contacts, setInvoiceContact, pos, setInvoicePo, invoiceAmount, createInvoice, invoicePeriod, submitting, invoiceUsageItemKeys } = props;
+    const { 
+        contacts, 
+        setInvoiceContact, 
+        pos, 
+        setInvoicePo, 
+        invoiceAmount, 
+        createInvoice, 
+        invoicePeriod, 
+        submitting, 
+        invoiceUsageItemKeys, 
+        invoiceContact 
+    } = props;
+
+    const addOptionsToPos = (pos) => {
+        const options = {...pos}
+        options.GPC = {PONumber: 'GPC', ID: 'GPC'}
+        options.Not = {PONumber: 'Not Required', ID: 'Not Required'}
+        options.Co = {PONumber: 'CO Journal', ID: 'CO Journal'}
+        return options;
+    }
+
     return (
         <>
             <Row className='mt-3'>
@@ -22,19 +42,23 @@ function ForActionToolbar(props){
                 <Col lg='3'>
                     <InvoiceCharacteristicSelect 
                         characteristic={'PO'} 
-                        options={pos} 
+                        options={addOptionsToPos(pos)} 
                         displayCharacteristic={'PONumber'} 
                         updateFunction={setInvoicePo} 
                     />
                 </Col>
-                <Col lg='3' className='col-form-label'><b>Invoice Amount:</b></Col>
-                <Col lg='2' className='col-form-label'>{formatMoney(invoiceAmount)}</Col>
+                <Col lg='5'>
+                    <Row>
+                        <Col sm='5' className='col-form-label'><b>Invoice Amount:</b></Col>
+                        <Col sm='7' className='col-form-label'>{formatMoney(invoiceAmount)}</Col>
+                    </Row>
+                </Col>
             </Row>
             <Row className='for-action-group-bottom'>
                 <Col xs={2} className='col-form-label'><b>Period:</b></Col>
                 <Col xs={6} className='col-form-label'>{invoicePeriod.join(", ")}</Col>
                 <Col xs={4}>
-                    <Button className='full-width' onClick={createInvoice} disabled={submitting || invoiceUsageItemKeys.length === 0}>
+                    <Button className='full-width' onClick={createInvoice} disabled={submitting || invoiceUsageItemKeys.length === 0 || !invoiceContact}>
                         {submitting ? 
                             <>
                                 <Spinner animation="border" variant="light" size="sm"/>

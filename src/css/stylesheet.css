@@ -420,3 +420,13 @@ form > .row {
   max-height: 300px;
   overflow-y: auto;
 }
+
+.fake-input {
+  color: #212529;
+  padding: 6px 0px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: red;
+  opacity: 1; /* Firefox */
+}

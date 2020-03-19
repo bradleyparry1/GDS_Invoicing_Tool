@@ -83,7 +83,7 @@ function Invoice(props){
                         name="InvoiceNumber"
                         plaintext={!editMode || submitting} 
                         readOnly={!editMode || submitting} 
-                        placeholder="Invoice Number" 
+                        placeholder="Missing" 
                         defaultValue={invoice.InvoiceNumber} 
                     />
                 </Col>
