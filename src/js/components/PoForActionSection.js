@@ -8,22 +8,28 @@ import reduce from 'lodash/reduce';
 import map from 'lodash/map';
 import keys from 'lodash/keys';
 import groupBy from 'lodash/groupBy';
+import formatMoney from '../functions/utilities';
 
 function PoForActionSection(props){
     let { product, department, tree, contacts, pos, usage } = props;
 
+    const contactIds = keys(contacts);
+    const poIds = keys(pos);
+
     const [invoiceUsageItems, setInvoiceUsageItems] = useState({});
     const [invoicePeriod, setInvoicePeriod] = useState([]);
     const [invoiceServiceIds, setInvoiceServiceIds] = useState([]);
-    const [invoiceContact,setInvoiceContact] = useState(contacts[0] ? contacts[0].ID : "");
-    const [invoicePo,setInvoicePo] = useState(pos[0] ? pos[0].ID : "");
+    const [invoiceServiceNames, setInvoiceServiceNames] = useState([]);
+    const [invoiceContact,setInvoiceContact] = useState(contactIds[0] ? contactIds[0] : "");
+    const [invoicePo,setInvoicePo] = useState(poIds[0] ? poIds[0] : "GPC");
     const [invoiceAmount,setInvoiceAmount] = useState(0);
     const [submitting,setSubmitting] = useState(false);
-    
+
     useEffect(() => {
         updateInvoiceAmount();
         updateInvoicePeriod();
         updateInvoiceServiceIds();
+        updateInvoiceServiceNames();
     },[invoiceUsageItems]);
 
     const updateInvoiceItems = (e,usageItem) => {
@@ -60,6 +66,14 @@ function PoForActionSection(props){
         setInvoiceServiceIds(newServiceIdsArray);
     }
 
+    const updateInvoiceServiceNames = () => {
+        const newServiceNamesArray = reduce(invoiceUsageItems,(serviceNamesArray,usageItem) => {
+            !serviceNamesArray.includes(usageItem.service_name) && serviceNamesArray.push(usageItem.service_name)
+            return serviceNamesArray;
+        },[]);
+        setInvoiceServiceNames(newServiceNamesArray);
+    }
+
     const createInvoice = () => {
         setSubmitting(true)
         const newId = uuidv4();
@@ -68,15 +82,29 @@ function PoForActionSection(props){
             DepartmentID: department.ID,
             ServiceIDs: JSON.stringify(invoiceServiceIds),
             POID: invoicePo,
+            ContactID: invoiceContact,
             InvoiceNumber: "",
             Amount: invoiceAmount,
-            Periods: JSON.stringify(invoicePeriod)
+            Periods: JSON.stringify(invoicePeriod),
+            CreatedAt: new Date().toLocaleString().replace(",","")
+        }
+
+        const emailObject = {
+            product: tree.value[product.value].ProductName,
+            department: department.DepartmentName,
+            period: invoicePeriod.join(", "),
+            amount: formatMoney(invoiceAmount),
+            contactEmails: contacts[invoiceContact].Email,
+            address: contacts[invoiceContact].Address,
+            poNumber: pos[invoicePo] ? pos[invoicePo].PONumber : invoicePo,
+            services: invoiceServiceNames.join(", ")
         }
 
         const usageItemUpdateObject = reduce(invoiceUsageItems, (returnObject,invoiceUsageItem) => {
             returnObject[invoiceUsageItem.ID] = {update: {"InvoiceID": newId}, criteria: {"ID": invoiceUsageItem.ID}}
             return returnObject;
         },{});
+        
         
         google.script.run.withSuccessHandler(() => {
             const newTree = {...tree.value};
@@ -96,7 +124,8 @@ function PoForActionSection(props){
         }).withFailureHandler((msg) => {
             alert(msg);
             setSubmitting(false)
-        }).createInvoice(newInvoice,usageItemUpdateObject,invoiceContact);
+        }).createInvoice(newInvoice,usageItemUpdateObject,emailObject);
+        
     }
     
     const getSectionTitle = (pos) => {

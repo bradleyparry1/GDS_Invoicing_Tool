@@ -2,13 +2,17 @@ import keyBy from 'lodash/keyBy';
 import groupBy from 'lodash/groupBy';
 import forEach from 'lodash/forEach';
 import keys from 'lodash/keys';
+import addAllIds from './addIds';
 
 function processData(d,dict){
     let parse = JSON.parse(d);
 
+    const existingDepartments = keyBy(parse.departments, 'ID');
+    const existingServices = keyBy(parse.services, 'ID');
+
+    const { departments, services, notifyUsage } = addAllIds( parse, { existingDepartments, existingServices });
+
     const products = keyBy(parse.products, 'ID');
-    const departments = keyBy(parse.departments, 'ID');
-    const services = keyBy(parse.services, 'ID');
     const pos = keyBy(parse.pos, 'ID');
     const invoices = keyBy(parse.invoices, 'ID');
     const contacts = keyBy(parse.contacts, 'ID');
@@ -22,7 +26,7 @@ function processData(d,dict){
         let contactsGroups = groupBy(parse.contacts,'DepartmentID');
         let posGroups = groupBy(parse.pos,'DepartmentID');
         
-        let notifyUsageGroups = groupBy(parse.notifyUsage,'service_id');
+        let notifyUsageGroups = groupBy(notifyUsage,'service_id');
         
         forEach(products,(productObject,productId) => {
 
