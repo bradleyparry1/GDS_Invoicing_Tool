@@ -9,6 +9,7 @@ function InvoiceCharacteristicSelect(props){
     const { characteristic, options, displayCharacteristic, updateFunction } = props;
 
     const update = (e) => {
+        console.log(e.target.value)
         updateFunction(e.target.value);
     }
 
@@ -16,7 +17,7 @@ function InvoiceCharacteristicSelect(props){
         <Form.Group as={Row}>
             <Form.Label column sm={3}><b>{characteristic}:</b></Form.Label>
             <Col sm={9}>
-                <Form.Control as="select" onClick={update}>
+                <Form.Control as="select" onChange={update}>
                     {map(options,(option) => {
                         return <option value={option.ID}>{option[displayCharacteristic]}</option>
                     })}

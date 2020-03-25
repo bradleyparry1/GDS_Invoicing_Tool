@@ -5,10 +5,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
+import map from 'lodash/map';
 import { v4 as uuidv4 } from 'uuid';
 
 function Invoice(props){
-    const { invoice, departmentId, updateInvoice, deleteInvoice, setShowNewForm } = props;
+    const { invoice, departmentId, updateInvoice, deleteInvoice, setShowNewForm, serviceNames, contactEmail } = props;
     const [editMode, setEditMode] = useState(props.new);
     const [submitting, setSubmitting] = useState(false);
 
@@ -121,6 +122,37 @@ function Invoice(props){
                         placeholder="Period" 
                         defaultValue={invoice.Periods ? JSON.parse(invoice.Periods).join(", ") : ''} 
                     />
+                </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} controlId={`services${invoice.ID}`}>
+                <Form.Label column sm="4">
+                    <b>Services:</b>
+                </Form.Label>
+                <Col sm="8">
+                    {map(serviceNames,(serviceName) => {
+                        return (<>
+                            <span className='fake-input'>{serviceName}</span><br/>
+                        </>);
+                    })}
+                </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} controlId={`contact${invoice.ID}`}>
+                <Form.Label column sm="4">
+                    <b>Contact Email:</b>
+                </Form.Label>
+                <Col sm="8">
+                    <span className='fake-input'>{contactEmail}</span>
+                </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} controlId={`date${invoice.ID}`}>
+                <Form.Label column sm="4">
+                    <b>Created At:</b>
+                </Form.Label>
+                <Col sm="8">
+                    <span className='fake-input'>{invoice.CreatedAt}</span>
                 </Col>
             </Form.Group>
 

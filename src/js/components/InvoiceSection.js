@@ -22,6 +22,17 @@ function InvoiceSection(props) {
         tree.updateFunction(newTree);
     }
 
+    const getInvoiceServiceNames = (serviceIds) => {
+        const parsedServiceIds =  JSON.parse(serviceIds);
+        return map(parsedServiceIds,(serviceId) => {
+            return department.services[serviceId].ServiceName;
+        })
+    }
+
+    const getInvoiceContactEmail = (contactId) => {
+        return department.contacts[contactId].Email;
+    }
+
     return (
         <Alert variant={'success'}>
             <Container>
@@ -31,10 +42,14 @@ function InvoiceSection(props) {
                     </Col>
                 </Row>
                 {map(invoices,(invoice) => {
+                    const serviceNames = getInvoiceServiceNames(invoice.ServiceIDs);
+                    const contactEmail = getInvoiceContactEmail(invoice.ContactID);
                     return (
                         <Invoice 
                             key={invoice.id} 
                             invoice={invoice} 
+                            serviceNames={serviceNames}
+                            contactEmail={contactEmail}
                             new={false} 
                             updateInvoice={updateInvoice} 
                             deleteInvoice={deleteInvoice} 
