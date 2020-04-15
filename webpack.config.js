@@ -2,7 +2,6 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 var HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
-
 module.exports = {
   module: {
     rules: [

@@ -10,7 +10,7 @@ import ServiceSelect from './ServiceSelect';
 
 
 function Po(props){
-    const { po, departmentId, updatePo, deletePo, setShowNewForm, services } = props;
+    const { po, departmentId, updatePo, deletePo, setShowNewForm, services, poUsed } = props;
     const [editMode, setEditMode] = useState(props.new);
     const [submitting, setSubmitting] = useState(false);
     
@@ -22,7 +22,7 @@ function Po(props){
     }
 
     const deletePoHandler = () => {
-        if(confirm("Are you sure you want to delete this contact?")){
+        if(confirm("Are you sure you want to delete this PO?")){
             setSubmitting(true)
             google.script.run.withSuccessHandler(() => {
                 deletePo(po.ID);
@@ -177,7 +177,7 @@ function Po(props){
                              : 
                             props.new ? "Submit PO" :"Submit Update"}
                         </Button>
-                        {props.new ? '' : <Button disabled={submitting} variant="danger" size="sm" onClick={deletePoHandler}>Delete</Button>}
+                        {props.new ? '' : <Button disabled={submitting || poUsed} variant="danger" size="sm" onClick={deletePoHandler}>Delete</Button>}
                     </ButtonGroup>
                </Col>
             </Row>

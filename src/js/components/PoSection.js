@@ -9,7 +9,11 @@ import map from 'lodash/map';
 
 function PoSection(props) {
     const { department, tree, product } = props;
-    const { pos, services } = department;
+    const { pos, services, invoices } = department;
+
+    const usedPos = map(invoices,(invoice) => invoice.POID);
+    
+console.log(usedPos)
 
     const [showNewForm, setShowNewForm] = useState(false);
 
@@ -42,8 +46,9 @@ function PoSection(props) {
                 {map(pos,(po) => {
                     return (
                         <Po 
-                            key={po.id} 
+                            key={po.ID} 
                             po={po} 
+                            poUsed={usedPos.includes(po.ID)}
                             new={false} 
                             updatePo={updatePo} 
                             deletePo={deletePo} 

@@ -4,10 +4,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import map from 'lodash/map';
+import values from 'lodash/values';
 import formatMoney from '../functions/utilities';
 
 function ForActionsItemsList(props){
     const { usage, updateInvoice, submitting } = props;
+
+    const sortedUsage = values(usage).sort((a,b) => {
+        return a.Period === b.Period ? 0 : a.Period > b.Period ? 1 : -1;
+    })
+
     return (
         <>
             <Container className='mt-2'>
@@ -19,7 +25,7 @@ function ForActionsItemsList(props){
                 </Row>
             </Container>
             <Container className='action-window'>
-                {map(usage,(usageItem) => {
+                {map(sortedUsage,(usageItem) => {
                     return (
                         <Row key={usageItem.ID}>
                             <Col xs={2} className='text-center'>{usageItem.Period}</Col>

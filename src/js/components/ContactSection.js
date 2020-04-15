@@ -7,9 +7,11 @@ import Col from 'react-bootstrap/Col'
 import map from 'lodash/map';
 import Contact from './Contact';
 
-function UsageSection(props) {
+function ContactSection(props) {
     const { department, tree, product } = props;
-    const { contacts } = department;
+    const { contacts, invoices } = department;
+    
+    const usedContacts = map(invoices,(invoice) => invoice.ContactID);
 
     const [showNewForm, setShowNewForm] = useState(false);
 
@@ -42,8 +44,9 @@ function UsageSection(props) {
                 {map(contacts,(contact) => {
                     return (
                         <Contact 
-                            key={contact.id} 
+                            key={contact.ID} 
                             contact={contact} 
+                            contactUsed={usedContacts.includes(contact.ID)}
                             new={false} 
                             updateContact={updateContact} 
                             deleteContact={deleteContact} 
@@ -73,4 +76,4 @@ function UsageSection(props) {
     )
 }
 
-export default UsageSection;
+export default ContactSection;

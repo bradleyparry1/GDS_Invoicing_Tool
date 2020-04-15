@@ -79,8 +79,10 @@ function Department(){
                         tree={tree}
                         product={product}
                     />
-                    <ServicesList 
+                    <InvoiceSection
                         department={departmentData}
+                        tree={tree}
+                        product={product}
                     />
                 </Col>
                 <Col lg={6}>
@@ -89,10 +91,8 @@ function Department(){
                         tree={tree}
                         product={product}
                     />
-                    <InvoiceSection
+                    <ServicesList 
                         department={departmentData}
-                        tree={tree}
-                        product={product}
                     />
                 </Col>
             </Row>

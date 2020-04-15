@@ -62,7 +62,17 @@ function ServiceList(props){
                         <b>{formatMoney(departmentBillingTotal)}</b>
                     </Col>
                 </Row>
-                <Row className={'mt-5 mb-3'}>
+                
+            </Container>
+        </Alert>
+    )
+}
+
+
+/*
+
+
+<Row className={'mt-5 mb-3'}>
                     <Col className={'text-center'}><h5>All usage items</h5></Col>
                 </Row>
                 <Row>
@@ -92,9 +102,8 @@ function ServiceList(props){
                         <b>{formatMoney(departmentBillingTotal)}</b>
                     </Col>
                 </Row>
-            </Container>
-        </Alert>
-    )
-}
+
+
+*/
 
 export default ServiceList;

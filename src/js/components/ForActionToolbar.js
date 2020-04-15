@@ -1,9 +1,8 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Spinner from 'react-bootstrap/Spinner';
-import Button from 'react-bootstrap/Button';
 import InvoiceCharacteristicSelect from './InvoiceCharacteristicSelect';
+import CreateInvoiceButton from './CreateInvoiceButton';
 import formatMoney from '../functions/utilities';
 
 function ForActionToolbar(props){
@@ -12,8 +11,10 @@ function ForActionToolbar(props){
         setInvoiceContact, 
         pos, 
         setInvoicePo, 
+        invoicePo, 
         invoiceAmount, 
-        createInvoice, 
+        createInvoiceEmail, 
+        createInvoiceBulk,
         invoicePeriod, 
         submitting, 
         invoiceUsageItemKeys, 
@@ -55,17 +56,16 @@ function ForActionToolbar(props){
                 </Col>
             </Row>
             <Row className='for-action-group-bottom'>
-                <Col xs={2} className='col-form-label'><b>Period:</b></Col>
-                <Col xs={6} className='col-form-label'>{invoicePeriod.join(", ")}</Col>
-                <Col xs={4}>
-                    <Button className='full-width' onClick={createInvoice} disabled={submitting || invoiceUsageItemKeys.length === 0 || !invoiceContact}>
-                        {submitting ? 
-                            <>
-                                <Spinner animation="border" variant="light" size="sm"/>
-                                <span style={{'marginLeft':'10px'}}>Creating Invoice</span>
-                            </>
-                         : "Create Invoice"}
-                    </Button>
+                <Col xs={2} className='col-form-label my-auto'><b>Period:</b></Col>
+                <Col xs={4} className='col-form-label my-auto'>{invoicePeriod.join(", ")}</Col>
+                <Col xs={6}>
+                    <CreateInvoiceButton 
+                        createInvoiceEmail={createInvoiceEmail} 
+                        createInvoiceBulk={createInvoiceBulk}
+                        disabled={submitting || invoiceUsageItemKeys.length === 0 || !invoiceContact}
+                        submitting={submitting}
+                        invoicePo={invoicePo}
+                         />
                 </Col>
             </Row>
         </>

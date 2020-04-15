@@ -21,7 +21,7 @@ function Invoice(props){
     }
 
     const deleteInvoiceHandler = () => {
-        if(confirm("Are you sure you want to delete this contact?")){
+        if(confirm("Are you sure you want to delete this invoice?")){
             setSubmitting(true)
             google.script.run.withSuccessHandler(() => {
                 deleteInvoice(invoice.ID);
@@ -169,8 +169,7 @@ function Invoice(props){
                             </>
                              : 
                             props.new ? "Submit Invoice" :"Submit Update"}
-                        </Button>
-                        {props.new ? '' : <Button disabled={submitting} variant="danger" size="sm" onClick={deleteInvoiceHandler}>Delete</Button>}
+                        </Button> 
                     </ButtonGroup>
                </Col>
             </Row>
@@ -178,5 +177,5 @@ function Invoice(props){
         </Form>
     )
 }
-
+//{props.new ? '' : <Button disabled={submitting} variant="danger" size="sm" onClick={deleteInvoiceHandler}>Delete</Button>}
 export default Invoice;

@@ -73,8 +73,8 @@ function PoForActionSection(props){
         },[]);
         setInvoiceServiceNames(newServiceNamesArray);
     }
-
-    const createInvoice = () => {
+    
+    const createInvoiceEmail = () => {
         setSubmitting(true)
         const newId = uuidv4();
         const newInvoice = {
@@ -105,11 +105,9 @@ function PoForActionSection(props){
             return returnObject;
         },{});
         
-        
         google.script.run.withSuccessHandler(() => {
             const newTree = {...tree.value};
             newTree[product.value].departments[department.ID].invoices[newId] = newInvoice;
-
             map(newTree[product.value].departments[department.ID].services,(service) => {
                 map(service.usage,(usageItem) => {
                     if(keys(invoiceUsageItems).includes(usageItem.ID.toString())){
@@ -117,7 +115,6 @@ function PoForActionSection(props){
                     }
                 })
             })
-
             tree.updateFunction(newTree);
             setInvoiceUsageItems({});
             setSubmitting(false);
@@ -125,7 +122,105 @@ function PoForActionSection(props){
             alert(msg);
             setSubmitting(false)
         }).createInvoice(newInvoice,usageItemUpdateObject,emailObject);
-        
+    }
+    
+    const createInvoiceBulk = () => {
+        setSubmitting(true)
+        const newId = uuidv4();
+        const newInvoice = {
+            ID: newId,
+            DepartmentID: department.ID,
+            ServiceIDs: JSON.stringify(invoiceServiceIds),
+            POID: invoicePo,
+            ContactID: invoiceContact,
+            InvoiceNumber: "",
+            Amount: invoiceAmount,
+            Periods: JSON.stringify(invoicePeriod),
+            CreatedAt: new Date().toLocaleString().replace(",","")
+        }
+
+        const bulkObject = {
+            product: tree.value[product.value].ProductName,
+            department: department.DepartmentName,
+            customerNumber: department.CustomerNumber,
+            period: invoicePeriod.join(", "),
+            amount: formatMoney(invoiceAmount),
+            contactEmails: contacts[invoiceContact].Email,
+            address: contacts[invoiceContact].Address,
+            poNumber: pos[invoicePo] ? pos[invoicePo].PONumber : invoicePo,
+            services: invoiceServiceNames.join(", ")
+        }
+
+        const usageItemUpdateObject = reduce(invoiceUsageItems, (returnObject,invoiceUsageItem) => {
+            returnObject[invoiceUsageItem.ID] = {update: {"InvoiceID": newId}, criteria: {"ID": invoiceUsageItem.ID}}
+            return returnObject;
+        },{});
+
+        const usageItemsGroupedByService = groupBy(invoiceUsageItems,"service_name");
+        let index = -1;
+        var newRows = map(usageItemsGroupedByService,(usageItems,serviceName) => {
+            index++;
+            return createBulkInvoiceRow(bulkObject,usageItems,serviceName,index);
+        })
+
+        google.script.run.withSuccessHandler(() => {
+            const newTree = {...tree.value};
+            newTree[product.value].departments[department.ID].invoices[newId] = newInvoice;
+            map(newTree[product.value].departments[department.ID].services,(service) => {
+                map(service.usage,(usageItem) => {
+                    if(keys(invoiceUsageItems).includes(usageItem.ID.toString())){
+                        newTree[product.value].departments[department.ID].services[service.ID].usage[usageItem.ID].InvoiceID = newId;
+                    }
+                })
+            })
+            tree.updateFunction(newTree);
+            setInvoiceUsageItems({});
+            setSubmitting(false);
+        }).withFailureHandler((msg) => {
+            alert(msg);
+            setSubmitting(false)
+        }).addToBulk(newInvoice,usageItemUpdateObject,newRows);
+    }
+
+    const createBulkInvoiceRow = (bulkObject,usageItems,serviceName,index) => {
+        const amount = reduce(usageItems,(total, usageItem) => {
+            total += usageItem.totalcost;
+            return total;
+        },0);
+
+        const usageItemText = map(usageItems,usageItem => {
+            return `${usageItem.letter_breakdown} - ${usageItem.Period}`;
+        }).join('\n');
+
+        return [
+            "",
+            bulkObject.customerNumber, //
+            bulkObject.department,
+            "Location", //
+            bulkObject.department,
+            "",
+            bulkObject.contactEmails,
+            "Accounts Payable",
+            bulkObject.poNumber,
+            `${bulkObject.product} costs - ${bulkObject.period}`,
+            serviceName + " - " +usageItemText,
+            serviceName + " - " +usageItemText,
+            index + 1,
+            "CAB01501",
+            "10370193",
+            "4482500004 INC - SALES OF OTHER GOODS AND SERVICES - INCOME FROM OGD'S",
+            "4482500004",
+            "Date To",
+            "Date From",
+            "",
+            "",
+            "",
+            amount,
+            "20%",
+            amount * 1.2,
+            "COF Programme Income",
+            "YES"
+        ];
     }
     
     const getSectionTitle = (pos) => {
@@ -153,9 +248,11 @@ function PoForActionSection(props){
                         contacts={contacts} 
                         setInvoiceContact={setInvoiceContact}
                         pos={pos}
+                        invoicePo={invoicePo}
                         setInvoicePo={setInvoicePo}
                         invoiceAmount={invoiceAmount}
-                        createInvoice={createInvoice}
+                        createInvoiceEmail={createInvoiceEmail}
+                        createInvoiceBulk={createInvoiceBulk}
                         invoicePeriod={invoicePeriod}
                         submitting={submitting}
                         invoiceUsageItemKeys={keys(invoiceUsageItems)}

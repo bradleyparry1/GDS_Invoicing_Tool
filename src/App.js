@@ -6,6 +6,8 @@ import Flash from './js/components/ui/Flash';
 import Home from './js/views/Home';
 import Department from './js/views/Department';
 
+import words from 'lodash/words';
+
 function App(){
     const [loading, setLoading] = useState(true);
     const [flash, setFlash] = useState("");

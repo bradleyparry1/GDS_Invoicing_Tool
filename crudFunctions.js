@@ -56,6 +56,14 @@ function createInvoice(invoiceObject,usageItemUpdateObject,emailObject){
     })
 }
 
+function addToBulk(invoiceObject,usageItemUpdateObject,newRows){
+    var db = objDB.open(invoicingId);
+    crud('create','invoiceTool','Invoices',{updateObject: invoiceObject, db });
+    crud('massUpdate','invoiceTool','Notify Usage Data',{massUpdateObject: usageItemUpdateObject, db});
+    var exportSheet = SpreadsheetApp.openById(notifyBulk).getSheetByName("Tool Export");
+    exportSheet.getRange(exportSheet.getLastRow() + 1, 1,newRows.length,newRows[0].length).setValues(newRows);
+}
+
 
 function addNewIds(options){
     const { newDepartments, newServices, notifyUsageIds } = options;

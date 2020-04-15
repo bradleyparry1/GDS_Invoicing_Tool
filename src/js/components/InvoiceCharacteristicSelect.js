@@ -9,7 +9,6 @@ function InvoiceCharacteristicSelect(props){
     const { characteristic, options, displayCharacteristic, updateFunction } = props;
 
     const update = (e) => {
-        console.log(e.target.value)
         updateFunction(e.target.value);
     }
 

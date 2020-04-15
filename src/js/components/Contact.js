@@ -8,7 +8,10 @@ import Form from 'react-bootstrap/Form';
 import { v4 as uuidv4 } from 'uuid';
 
 function Contact(props){
-    const { contact, departmentId, updateContact, deleteContact, setShowNewForm } = props;
+    const { contact, departmentId, updateContact, deleteContact, setShowNewForm, contactUsed } = props;
+
+    //console.log(contactUsed)
+
     const [editMode, setEditMode] = useState(props.new);
     const [submitting, setSubmitting] = useState(false);
 
@@ -137,7 +140,7 @@ function Contact(props){
                              : 
                             props.new ? "Submit Contact" :"Submit Update"}
                         </Button>
-                        {props.new ? '' : <Button disabled={submitting} variant="danger" size="sm" onClick={deleteContactHandler}>Delete</Button>}
+                        {props.new ? '' : <Button disabled={submitting || contactUsed} variant="danger" size="sm" onClick={deleteContactHandler}>Delete</Button>}
                     </ButtonGroup>
                </Col>
             </Row>
