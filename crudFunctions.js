@@ -48,9 +48,12 @@ function createInvoice(invoiceObject,usageItemUpdateObject,emailObject){
     emailTemplate.poNumber = emailObject.poNumber;
     emailTemplate.contactEmails = emailObject.contactEmails;
     emailTemplate.address = emailObject.address;
+    emailTemplate.textDescription = emailObject.textDescription;
+    
+    let recipient = Session.getActiveUser().getEmail();
 
     MailApp.sendEmail({
-        to: 'bradley.parry@digital.cabinet-office.gov.uk',
+        to: recipient,
         subject: `Income Invoice Request: ${emailObject.department} ${emailObject.product} usage ${emailObject.period}`,
         htmlBody: emailTemplate.evaluate().getContent()
     })
@@ -81,6 +84,6 @@ function addNewIds(options){
 
     if(notifyUsageIds) {
         var notifyUsageSheet = ss.getSheetByName("Notify Usage Data");
-        notifyUsageSheet.getRange(2, 11, notifyUsageIds.length, 1).setValues(notifyUsageIds);
+        notifyUsageSheet.getRange(2, 13, notifyUsageIds.length, 1).setValues(notifyUsageIds);
     }
 }

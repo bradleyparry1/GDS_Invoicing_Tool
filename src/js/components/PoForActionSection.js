@@ -32,6 +32,12 @@ function PoForActionSection(props){
         updateInvoiceServiceNames();
     },[invoiceUsageItems]);
 
+    useEffect(() => {
+        if(!invoiceContact && contactIds[0]){
+            setInvoiceContact(contactIds[0])
+        }
+    },[contactIds])
+
     const updateInvoiceItems = (e,usageItem) => {
         let newInvoiceUsageItems = {...invoiceUsageItems};
         if(e.target.checked){
@@ -89,6 +95,10 @@ function PoForActionSection(props){
             CreatedAt: new Date().toLocaleString().replace(",","")
         }
 
+        const usageItemText = map(invoiceUsageItems,usageItem => {
+            return `${usageItem.letter_breakdown} - ${usageItem.Period}`;
+        }).join('\n');
+
         const emailObject = {
             product: tree.value[product.value].ProductName,
             department: department.DepartmentName,
@@ -97,7 +107,8 @@ function PoForActionSection(props){
             contactEmails: contacts[invoiceContact].Email,
             address: contacts[invoiceContact].Address,
             poNumber: pos[invoicePo] ? pos[invoicePo].PONumber : invoicePo,
-            services: invoiceServiceNames.join(", ")
+            services: invoiceServiceNames.join(", "),
+            textDescription: usageItemText
         }
 
         const usageItemUpdateObject = reduce(invoiceUsageItems, (returnObject,invoiceUsageItem) => {
@@ -143,6 +154,7 @@ function PoForActionSection(props){
             product: tree.value[product.value].ProductName,
             department: department.DepartmentName,
             customerNumber: department.CustomerNumber,
+            location: department.Location,
             period: invoicePeriod.join(", "),
             amount: formatMoney(invoiceAmount),
             contactEmails: contacts[invoiceContact].Email,
@@ -192,11 +204,16 @@ function PoForActionSection(props){
             return `${usageItem.letter_breakdown} - ${usageItem.Period}`;
         }).join('\n');
 
+        const usageItemObject = reduce(usageItems,(object,usageItem) => {
+            object.usageItemText.push(`${usageItem.letter_breakdown} - ${usageItem.Period}`);
+            //object.startDate = 
+        },{usageItemText: [], startDate: null, endDate: null})
+
         return [
             "",
-            bulkObject.customerNumber, //
+            bulkObject.customerNumber, 
             bulkObject.department,
-            "Location", //
+            bulkObject.location, 
             bulkObject.department,
             "",
             bulkObject.contactEmails,

@@ -44,14 +44,14 @@ function Department(){
                 </Col>
             </Row>
             <Row>
-                <Col md={4}>
+                <Col md={6} lg={4}>
                     <Scorecard 
                         variant={'dark'}
                         title={"Total Amount To Bill"}
                         value={formatMoney(billingAmount)}
                     />
                 </Col>
-                <Col md={4}>
+                <Col md={6} lg={4}>
                     <Scorecard 
                         variant={'success'}
                         title={"Total Amount Invoiced"}
@@ -59,7 +59,7 @@ function Department(){
                     />
                 </Col>
 
-                <Col md={4}>
+                <Col md={12} lg={4}>
                     <Scorecard 
                         variant={outstanding === 0 ? 'success' : 'danger'}
                         title={"Outstanding Amount"}
