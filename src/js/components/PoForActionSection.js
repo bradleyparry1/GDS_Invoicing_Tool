@@ -195,19 +195,18 @@ function PoForActionSection(props){
     }
 
     const createBulkInvoiceRow = (bulkObject,usageItems,serviceName,index) => {
-        const amount = reduce(usageItems,(total, usageItem) => {
-            total += usageItem.totalcost;
-            return total;
-        },0);
-
-        const usageItemText = map(usageItems,usageItem => {
-            return `${usageItem.letter_breakdown} - ${usageItem.Period}`;
-        }).join('\n');
-
         const usageItemObject = reduce(usageItems,(object,usageItem) => {
-            object.usageItemText.push(`${usageItem.letter_breakdown} - ${usageItem.Period}`);
-            //object.startDate = 
-        },{usageItemText: [], startDate: null, endDate: null})
+            console.log(usageItem)
+            const usageItemStart = new Date(usageItem.StartDate);
+            const usageItemEnd = new Date(usageItem.EndDate);
+            object.usageItemText.push(usageItem.letter_breakdown ? `${usageItem.letter_breakdown} - ${usageItem.Period}` : `${usageItem.sms_fragments} SMS - ${usageItem.Period}`);
+            object.startDate = !object.startDate || usageItemStart < object.startDate ? usageItemStart : object.startDate;
+            object.endDate = !object.endDate || usageItemEnd > object.endDate ? usageItemEnd : object.endDate;
+            object.amount += usageItem.totalcost;
+            return object;
+        },{amount: 0, usageItemText: [serviceName], startDate: null, endDate: null})
+
+        const usageItemText = usageItemObject.usageItemText.join('\n');
 
         return [
             "",
@@ -220,21 +219,21 @@ function PoForActionSection(props){
             "Accounts Payable",
             bulkObject.poNumber,
             `${bulkObject.product} costs - ${bulkObject.period}`,
-            serviceName + " - " +usageItemText,
-            serviceName + " - " +usageItemText,
+            usageItemText,
+            usageItemText,
             index + 1,
             "CAB01501",
             "10370193",
             "4482500004 INC - SALES OF OTHER GOODS AND SERVICES - INCOME FROM OGD'S",
             "4482500004",
-            "Date To",
-            "Date From",
+            usageItemObject.startDate,
+            usageItemObject.endDate,
             "",
             "",
             "",
-            amount,
+            usageItemObject.amount,
             "20%",
-            amount * 1.2,
+            usageItemObject.amount * 1.2,
             "COF Programme Income",
             "YES"
         ];

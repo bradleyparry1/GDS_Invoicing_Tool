@@ -6,8 +6,6 @@ import Flash from './js/components/ui/Flash';
 import Home from './js/views/Home';
 import Department from './js/views/Department';
 
-import words from 'lodash/words';
-
 function App(){
     const [loading, setLoading] = useState(true);
     const [flash, setFlash] = useState("");
@@ -19,6 +17,7 @@ function App(){
     const [departments, setDepartments] = useState({});
     const [services, setServices] = useState({});
     const [pos, setPos] = useState({});
+    const [prepayments, setPrepayments] = useState({});
     const [invoices, setInvoices] = useState({});
     const [contacts, setContacts] = useState({});
     const [tree, setTree] = useState({});
@@ -53,7 +52,10 @@ function App(){
           value: pos, 
           updateFunction: setPos
         },
-        invoices: {
+        prepayments: {
+          value: prepayments, 
+          updateFunction: setPrepayments
+        },invoices: {
           value: invoices, 
           updateFunction: setInvoices
         },
@@ -80,6 +82,7 @@ function App(){
               setDepartments, 
               setServices, 
               setPos, 
+              setPrepayments, 
               setInvoices, 
               setContacts,
               setTree

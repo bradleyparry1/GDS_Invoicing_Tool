@@ -7,6 +7,7 @@ import ForActionTable from '../components/ForActionTable';
 import ContactSection from '../components/ContactSection';
 import Scorecard from '../components/Scorecard';
 import PoSection from '../components/PoSection';
+import PrepaymentSection from '../components/PrepaymentSection';
 import InvoiceSection from '../components/InvoiceSection';
 import ServicesList from '../components/ServicesList';
 import AppContext from './AppContext';
@@ -84,6 +85,11 @@ function Department(){
                         tree={tree}
                         product={product}
                     />
+                    <PrepaymentSection
+                        department={departmentData}
+                        tree={tree}
+                        product={product}
+                    />
                 </Col>
                 <Col lg={6}>
                     <PoSection
@@ -94,14 +100,6 @@ function Department(){
                     <ServicesList 
                         department={departmentData}
                     />
-                </Col>
-            </Row>
-            <Row>
-                <Col lg={6}>
-                    
-                </Col>
-                <Col lg={6}>
-                    
                 </Col>
             </Row>
             

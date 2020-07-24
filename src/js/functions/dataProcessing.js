@@ -14,6 +14,7 @@ function processData(d,dict){
 
     const products = keyBy(parse.products, 'ID');
     const pos = keyBy(parse.pos, 'ID');
+    const prepayments = keyBy(parse.prepayments, 'ID');
     const invoices = keyBy(parse.invoices, 'ID');
     const contacts = keyBy(parse.contacts, 'ID');
 
@@ -22,6 +23,7 @@ function processData(d,dict){
 
         let departmentsGroups = groupBy(parse.departments,'ProductID');
         let servicesGroups = groupBy(parse.services,'DepartmentID');
+        let prepaymentsGroups = groupBy(parse.prepayments,'DepartmentID');
         let invoicesGroups = groupBy(parse.invoices,'DepartmentID');
         let contactsGroups = groupBy(parse.contacts,'DepartmentID');
         let posGroups = groupBy(parse.pos,'DepartmentID');
@@ -40,13 +42,15 @@ function processData(d,dict){
             forEach(productDepartments,(departmentObject,departmentId) => {
                 let departmentServices = keyBy(servicesGroups[departmentId], 'ID');
                 let departmentInvoices = keyBy(invoicesGroups[departmentId], 'ID');
+                let departmentPrepayments = keyBy(prepaymentsGroups[departmentId], 'ID');
                 let departmentContacts = keyBy(contactsGroups[departmentId], 'ID');
                 let departmentPos = keyBy(posGroups[departmentId], 'ID');
                 
                 treeObject[productId].departments[departmentId] = 
                 { 
                     ...departmentObject, 
-                    services: departmentServices ,
+                    services: departmentServices,
+                    prepayments: departmentPrepayments,
                     invoices: departmentInvoices,
                     contacts: departmentContacts,
                     pos: departmentPos
@@ -59,7 +63,6 @@ function processData(d,dict){
                     treeObject[productId].departments[departmentId].services[serviceId] = 
                     { 
                         ...serviceObject, 
-                        //pos: servicePos, 
                         usage: serviceUsage,
                     }
                 });
@@ -74,6 +77,7 @@ function processData(d,dict){
     dict.setDepartments(departments);
     dict.setServices(services);
     dict.setPos(pos);
+    dict.setPrepayments(prepayments);
     dict.setInvoices(invoices);
     dict.setContacts(contacts);
     dict.setLoading(false);

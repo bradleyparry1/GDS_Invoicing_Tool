@@ -29,9 +29,10 @@ function getData(){
     const services = objDB.getRows( db, "Services");
     const pos = objDB.getRows( db, "POs");
     const invoices = objDB.getRows( db, "Invoices");
+    const prepayments = objDB.getRows( db, "Prepayments");
     const contacts = objDB.getRows( db, "Contacts");
 
-    return JSON.stringify({products, departments, services, pos, invoices, contacts, notifyUsage});
+    return JSON.stringify({products, departments, services, pos, prepayments, invoices, contacts, notifyUsage});
 }
 
 

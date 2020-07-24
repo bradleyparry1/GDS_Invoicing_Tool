@@ -177,5 +177,5 @@ function Invoice(props){
         </Form>
     )
 }
-//{props.new ? '' : <Button disabled={submitting} variant="danger" size="sm" onClick={deleteInvoiceHandler}>Delete</Button>}
+
 export default Invoice;

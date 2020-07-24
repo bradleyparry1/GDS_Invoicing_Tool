@@ -12,8 +12,6 @@ function PoSection(props) {
     const { pos, services, invoices } = department;
 
     const usedPos = map(invoices,(invoice) => invoice.POID);
-    
-console.log(usedPos)
 
     const [showNewForm, setShowNewForm] = useState(false);
 
