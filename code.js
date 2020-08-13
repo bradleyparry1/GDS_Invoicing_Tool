@@ -16,21 +16,21 @@ function doGet(e) {
         return template.evaluate()
             .setTitle('Invoicing Tool')
             .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-            .setFaviconUrl('https://pbs.twimg.com/profile_images/1148151001750392832/vt5LEU1l_400x400.png');
+            .setFaviconUrl("https://pbs.twimg.com/profile_images/1278310956901285888/sIOYGv2N_400x400.png");
     }
 }
 
 function getData(){
-    var db = objDB.open(invoicingId);
+    var db = open(invoicingId);
     
-    const notifyUsage = objDB.getRows( db, "Notify Usage Data");
-    const products = objDB.getRows( db, "Products");
-    const departments = objDB.getRows( db, "Departments");
-    const services = objDB.getRows( db, "Services");
-    const pos = objDB.getRows( db, "POs");
-    const invoices = objDB.getRows( db, "Invoices");
-    const prepayments = objDB.getRows( db, "Prepayments");
-    const contacts = objDB.getRows( db, "Contacts");
+    const notifyUsage = getRows( db, "Notify Usage Data");
+    const products = getRows( db, "Products");
+    const departments = getRows( db, "Departments");
+    const services = getRows( db, "Services");
+    const pos = getRows( db, "POs");
+    const invoices = getRows( db, "Invoices");
+    const prepayments = getRows( db, "Prepayments");
+    const contacts = getRows( db, "Contacts");
 
     return JSON.stringify({products, departments, services, pos, prepayments, invoices, contacts, notifyUsage});
 }

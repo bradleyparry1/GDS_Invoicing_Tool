@@ -11,7 +11,7 @@ import PrepaymentSection from '../components/PrepaymentSection';
 import InvoiceSection from '../components/InvoiceSection';
 import ServicesList from '../components/ServicesList';
 import AppContext from './AppContext';
-import { calculateDepartmentUsageBillingTotal, calculateDepartmentInvoiceValue } from '../functions/departmentFunctions';
+import { calculateDepartmentUsageBillingTotal, calculateDepartmentInvoiceValue, calculateDepartmentPrepaidValue } from '../functions/departmentFunctions';
 import formatMoney from '../functions/utilities';
 
 function Department(){
@@ -21,7 +21,8 @@ function Department(){
     
     const billingAmount = calculateDepartmentUsageBillingTotal(departmentData);
     const invoiceAmount = calculateDepartmentInvoiceValue(departmentData);
-    const outstanding = billingAmount - invoiceAmount;
+    const prepaymentAmount = calculateDepartmentPrepaidValue(departmentData);
+    const outstanding = billingAmount - invoiceAmount - prepaymentAmount;
 
     const backToDepartmentList = () => {
         department.updateFunction(null);
@@ -45,13 +46,22 @@ function Department(){
                 </Col>
             </Row>
             <Row>
-                <Col md={6} lg={4}>
+                <Col md={12} lg={4}>
                     <Scorecard 
                         variant={'dark'}
                         title={"Total Amount To Bill"}
                         value={formatMoney(billingAmount)}
                     />
                 </Col>
+                
+                <Col md={6} lg={4}>
+                    <Scorecard 
+                        variant={'success'}
+                        title={"Total Amount Prepaid"}
+                        value={formatMoney(prepaymentAmount)}
+                    />
+                </Col>
+
                 <Col md={6} lg={4}>
                     <Scorecard 
                         variant={'success'}
@@ -60,7 +70,7 @@ function Department(){
                     />
                 </Col>
 
-                <Col md={12} lg={4}>
+                <Col md={12} lg={12}>
                     <Scorecard 
                         variant={outstanding === 0 ? 'success' : 'danger'}
                         title={"Outstanding Amount"}

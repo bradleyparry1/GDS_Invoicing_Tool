@@ -50,7 +50,7 @@ function PoForActionSection(props){
 
     const updateInvoiceAmount = () => {
         const newInvoiceAmount = reduce(invoiceUsageItems,(total,usageItem) => {
-            total += usageItem.totalcost;
+            total += usageItem.displayAmount;
             return total;
         },0);
         setInvoiceAmount(newInvoiceAmount);
@@ -96,7 +96,7 @@ function PoForActionSection(props){
         }
 
         const usageItemText = map(invoiceUsageItems,usageItem => {
-            return `${usageItem.letter_breakdown} - ${usageItem.Period}`;
+            return usageItem.letter_breakdown ? `${usageItem.letter_breakdown} - ${usageItem.Period}` : `${usageItem.sms_fragments} SMS - ${usageItem.Period}`;
         }).join('\n');
 
         const emailObject = {

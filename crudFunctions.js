@@ -3,26 +3,26 @@
 
 //updateObject,criteria
 function crud(type,database,table,options){
-    var db = options.db ? options.db : objDB.open( getDatabaseId(database) );
+    var db = options.db ? options.db : open( getDatabaseId(database) );
     const { updateObject, criteriaObject, massUpdateObject } = options;
 
     switch(type) {
         case 'create':
-            objDB.insertRow( db, table, updateObject );
+            insertRow( db, table, updateObject );
             return;
         case 'update':
-            objDB.updateRow( db, table, updateObject, criteriaObject );
+            updateRow( db, table, updateObject, criteriaObject );
             return;
         case 'delete':
-            objDB.deleteRow( db, table, criteriaObject );
+            deleteRow( db, table, criteriaObject );
             return;
         case 'massUpdate':
             for(var update in massUpdateObject){
-                objDB.updateRow( db, table, massUpdateObject[update].update, massUpdateObject[update].criteria );
+                updateRow( db, table, massUpdateObject[update].update, massUpdateObject[update].criteria );
             }
             return;
         default:
-            var rows = objDB.getRows( db, table);
+            var rows = getRows( db, table);
             return JSON.stringify(rows);
     }
 }
@@ -35,7 +35,7 @@ const getDatabaseId = (database) => {
 }
 
 function createInvoice(invoiceObject,usageItemUpdateObject,emailObject){
-    var db = objDB.open(invoicingId);
+    var db = open(invoicingId);
     crud('create','invoiceTool','Invoices',{updateObject: invoiceObject, db });
     crud('massUpdate','invoiceTool','Notify Usage Data',{massUpdateObject: usageItemUpdateObject, db});
     let emailTemplate = HtmlService.createTemplateFromFile('invoice_email');
@@ -60,7 +60,7 @@ function createInvoice(invoiceObject,usageItemUpdateObject,emailObject){
 }
 
 function addToBulk(invoiceObject,usageItemUpdateObject,newRows){
-    var db = objDB.open(invoicingId);
+    var db = open(invoicingId);
     crud('create','invoiceTool','Invoices',{updateObject: invoiceObject, db });
     crud('massUpdate','invoiceTool','Notify Usage Data',{massUpdateObject: usageItemUpdateObject, db});
     var exportSheet = SpreadsheetApp.openById(notifyBulk).getSheetByName("Tool Export");

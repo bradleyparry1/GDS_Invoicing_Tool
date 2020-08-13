@@ -14,6 +14,14 @@ function calculateDepartmentInvoiceValue(department){
     },0);
 }
 
+function calculateDepartmentPrepaidValue(department){
+    const prepayments = department.prepayments;
+    return reduce(prepayments,(total,prepayment) => {
+        total += Number(prepayment.Amount)
+        return total;
+    },0);
+}
+
 function calculateDepartmentPoQuantity(department){
     const services = department.services;
     return reduce(services,(total,service) => {
@@ -61,5 +69,6 @@ export {
     calculateDepartmentPoQuantity,
     calculateDepartmentPoValue,
     calculateDepartmentUsageBillingTotal,
-    getDepartmentCharateristics
+    getDepartmentCharateristics,
+    calculateDepartmentPrepaidValue
 }

@@ -17,6 +17,8 @@ function processData(d,dict){
     const prepayments = keyBy(parse.prepayments, 'ID');
     const invoices = keyBy(parse.invoices, 'ID');
     const contacts = keyBy(parse.contacts, 'ID');
+    
+    console.log(pos);
 
     const createTree = () => {
         let treeObject = {};

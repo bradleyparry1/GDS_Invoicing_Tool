@@ -37,6 +37,7 @@ module.exports = {
         'code.js',
         'crudFunctions.js',
         'urls.js',
+        'objDB.js',
         'appsscript.json',
         '.clasp.json',
         'invoice_email.html'

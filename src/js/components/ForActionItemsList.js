@@ -30,7 +30,7 @@ function ForActionsItemsList(props){
                         <Row key={usageItem.ID}>
                             <Col xs={2} className='text-center'>{usageItem.Period}</Col>
                             <Col xs={4}>{usageItem.service_name}</Col>
-                            <Col xs={3} className='text-center'>{formatMoney(usageItem.totalcost)}</Col>
+                            <Col xs={3} className='text-center'>{formatMoney(usageItem.displayAmount)}</Col>
                             <Col xs={3}>
                                 {usageItem.InvoiceID ? "" : 
                                     <Form.Group controlId={usageItem.ID}>
