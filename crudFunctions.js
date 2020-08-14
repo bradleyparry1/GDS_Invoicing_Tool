@@ -49,6 +49,9 @@ function createInvoice(invoiceObject,usageItemUpdateObject,emailObject){
     emailTemplate.contactEmails = emailObject.contactEmails;
     emailTemplate.address = emailObject.address;
     emailTemplate.textDescription = emailObject.textDescription;
+
+    emailTemplate.location = emailObject.location;
+    emailTemplate.customerNumber = emailObject.customerNumber;
     
     let recipient = Session.getActiveUser().getEmail();
 

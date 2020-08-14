@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InvoiceCharacteristicSelect from './InvoiceCharacteristicSelect';
 import CreateInvoiceButton from './CreateInvoiceButton';
-import formatMoney from '../functions/utilities';
+import {formatMoney} from '../functions/utilities';
 
 function ForActionToolbar(props){
     const { 
@@ -50,15 +50,15 @@ function ForActionToolbar(props){
                 </Col>
                 <Col lg='5'>
                     <Row>
-                        <Col sm='5' className='col-form-label'><b>Invoice Amount:</b></Col>
-                        <Col sm='7' className='col-form-label'>{formatMoney(invoiceAmount)}</Col>
+                        <Col sm='6' className='col-form-label'><b>Invoice Amount:</b></Col>
+                        <Col sm='6' className='col-form-label'>{formatMoney(invoiceAmount)}</Col>
                     </Row>
                 </Col>
             </Row>
             <Row className='for-action-group-bottom'>
                 <Col xs={2} className='col-form-label my-auto'><b>Period:</b></Col>
-                <Col xs={4} className='col-form-label my-auto'>{invoicePeriod.join(", ")}</Col>
-                <Col xs={6}>
+                <Col xs={2} className='col-form-label my-auto'>{invoicePeriod.join(", ")}</Col>
+                <Col xs={8}>
                     <CreateInvoiceButton 
                         createInvoiceEmail={createInvoiceEmail} 
                         createInvoiceBulk={createInvoiceBulk}

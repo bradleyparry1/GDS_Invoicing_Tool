@@ -14,10 +14,26 @@ function calculateDepartmentInvoiceValue(department){
     },0);
 }
 
+function calculateDepartmentIncomeGenerated(department){
+    const invoices = department.invoices;
+    return reduce(invoices,(total,invoice) => {
+        total += invoice.InvoiceNumber ? Number(invoice.Amount) : 0;
+        return total;
+    },0);
+}
+
 function calculateDepartmentPrepaidValue(department){
     const prepayments = department.prepayments;
     return reduce(prepayments,(total,prepayment) => {
         total += Number(prepayment.Amount)
+        return total;
+    },0);
+}
+
+function calculateDepartmentPrepaidValueUsed(department){
+    const prepayments = department.prepayments;
+    return reduce(prepayments,(total,prepayment) => {
+        total += Number(prepayment.Amount - prepayment.Remaining)
         return total;
     },0);
 }
@@ -65,10 +81,12 @@ function getDepartmentCharateristics(department,characteristic){
 
 export {
     calculateDepartmentInvoiceQuantity,
+    calculateDepartmentIncomeGenerated,
     calculateDepartmentInvoiceValue,
     calculateDepartmentPoQuantity,
     calculateDepartmentPoValue,
     calculateDepartmentUsageBillingTotal,
     getDepartmentCharateristics,
-    calculateDepartmentPrepaidValue
+    calculateDepartmentPrepaidValue,
+    calculateDepartmentPrepaidValueUsed
 }

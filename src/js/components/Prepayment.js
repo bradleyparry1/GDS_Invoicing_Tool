@@ -9,7 +9,7 @@ import ServiceSelect from './ServiceSelect';
 import { v4 as uuidv4 } from 'uuid';
 
 function Prepayment(props){
-    const { prepayment, departmentId, updatePrepayment, deletePrepayment, setShowNewForm, services, serviceNames, contactEmail } = props;
+    const { prepayment, departmentId, updatePrepayment, deletePrepayment, setShowNewForm, services } = props;
     const [editMode, setEditMode] = useState(props.new);
     const [submitting, setSubmitting] = useState(false);
 
@@ -63,6 +63,8 @@ function Prepayment(props){
             const newId = uuidv4();
             options.updateObject.ID = newId;
             options.updateObject.DepartmentID = departmentId;
+            options.updateObject.Remaining = updateObject.Amount;
+            options.updateObject.usage = {};
         }
 
         //options.updateObject.Periods = JSON.stringify(options.updateObject.Periods.split(", "));

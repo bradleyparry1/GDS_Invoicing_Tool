@@ -6,10 +6,11 @@ import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import map from 'lodash/map';
+import {formatDate} from '../functions/utilities';
 import { v4 as uuidv4 } from 'uuid';
 
 function Invoice(props){
-    const { invoice, departmentId, updateInvoice, deleteInvoice, setShowNewForm, serviceNames, contactEmail } = props;
+    const { invoice, departmentId, updateInvoice, setShowNewForm, serviceNames, contactEmail } = props;
     const [editMode, setEditMode] = useState(props.new);
     const [submitting, setSubmitting] = useState(false);
 
@@ -20,6 +21,7 @@ function Invoice(props){
         }
     }
 
+    /*
     const deleteInvoiceHandler = () => {
         if(confirm("Are you sure you want to delete this invoice?")){
             setSubmitting(true)
@@ -31,7 +33,7 @@ function Invoice(props){
                 setSubmitting(false)
             }).crud('delete','invoicingTool','Invoices',{criteriaObject: {ID: invoice.ID}});
         }
-    }
+    } */
 
     const handleSubmit = (event) => {
         
@@ -50,16 +52,9 @@ function Invoice(props){
             updateObject
         }
 
-        if(!props.new){
-            options.criteriaObject = {ID: invoice.ID};
-            options.updateObject.ID = invoice.ID;
-            options.updateObject.DepartmentID = invoice.DepartmentID;
-        } else {
-            const newId = uuidv4();
-            options.updateObject.ID = newId;
-            options.updateObject.DepartmentID = departmentId;
-        }
-
+        options.updateObject.ID = invoice.ID;
+        options.updateObject.DepartmentID = departmentId;
+        
         options.updateObject.Periods = JSON.stringify(options.updateObject.Periods.split(", "));
         const type = props.new ? 'create' : 'update';
 
@@ -105,7 +100,7 @@ function Invoice(props){
                         plaintext={true} 
                         readOnly={true} 
                         placeholder="Amount" 
-                        defaultValue={invoice.Amount} 
+                        defaultValue={Number(invoice.Amount).toFixed(2)} 
                     />
                 </Col>
             </Form.Group>
@@ -152,7 +147,7 @@ function Invoice(props){
                     <b>Created At:</b>
                 </Form.Label>
                 <Col sm="8">
-                    <span className='fake-input'>{invoice.CreatedAt}</span>
+                    <span className='fake-input'>{formatDate(new Date(invoice.CreatedAt))}</span>
                 </Col>
             </Form.Group>
 

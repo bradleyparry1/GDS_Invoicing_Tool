@@ -2,6 +2,7 @@ import keyBy from 'lodash/keyBy';
 import groupBy from 'lodash/groupBy';
 import forEach from 'lodash/forEach';
 import keys from 'lodash/keys';
+import reduce from 'lodash/reduce';
 import addAllIds from './addIds';
 
 function processData(d,dict){
@@ -17,8 +18,6 @@ function processData(d,dict){
     const prepayments = keyBy(parse.prepayments, 'ID');
     const invoices = keyBy(parse.invoices, 'ID');
     const contacts = keyBy(parse.contacts, 'ID');
-    
-    console.log(pos);
 
     const createTree = () => {
         let treeObject = {};
@@ -31,6 +30,7 @@ function processData(d,dict){
         let posGroups = groupBy(parse.pos,'DepartmentID');
         
         let notifyUsageGroups = groupBy(notifyUsage,'service_id');
+        let notifyUsagePrepaymentGroups = groupBy(notifyUsage,'PrepaymentID');
         
         forEach(products,(productObject,productId) => {
 
@@ -68,6 +68,23 @@ function processData(d,dict){
                         usage: serviceUsage,
                     }
                 });
+
+                forEach(departmentPrepayments,(prepaymentObject, prepaymentId) => {
+                    //let servicePos = keyBy(posGroups[serviceId], 'ID');
+                    let prepaymentUsage = keyBy(notifyUsagePrepaymentGroups[prepaymentId], 'ID');
+                    
+                    let prepaymentUsed = reduce(prepaymentUsage,(total,usageItem) => total += usageItem.PrepaymentAmount,0);
+                    let prepaymentRemaining = prepaymentObject.Amount - prepaymentUsed;
+
+                    treeObject[productId].departments[departmentId].prepayments[prepaymentId] = 
+                    { 
+                        ...prepaymentObject, 
+                        usage: prepaymentUsage,
+                        Remaining: prepaymentRemaining
+                    }
+                });
+
+
             });
         });
         return treeObject;

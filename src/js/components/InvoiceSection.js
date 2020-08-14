@@ -12,6 +12,11 @@ function InvoiceSection(props) {
 
     const updateInvoice = (updateObject) => {
         const newTree = {...tree.value};
+        const oldObject = newTree[product.value].departments[department.ID].invoices[updateObject.ID];
+        
+        updateObject.ServiceIDs = oldObject.ServiceIDs;
+        updateObject.ContactID = oldObject.ContactID;
+        updateObject.CreatedAt = oldObject.CreatedAt;
         newTree[product.value].departments[department.ID].invoices[updateObject.ID] = updateObject;
         tree.updateFunction(newTree);
     }

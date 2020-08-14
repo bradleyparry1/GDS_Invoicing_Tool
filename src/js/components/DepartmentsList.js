@@ -2,11 +2,14 @@ import React, { useContext } from 'react';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css'
 import AppContext from '../views/AppContext';
-import Button from 'react-bootstrap/Button';
 import keys from 'lodash/keys';
 import values from 'lodash/values';
-import { calculateDepartmentUsageBillingTotal, calculateDepartmentInvoiceValue } from '../functions/departmentFunctions';
-import formatMoney from '../functions/utilities';
+import { 
+  calculateDepartmentUsageBillingTotal, 
+  calculateDepartmentInvoiceValue, 
+  calculateDepartmentPrepaidValueUsed 
+} from '../functions/departmentFunctions';
+import {formatMoney} from '../functions/utilities';
 
 function DepartmentsList() {
     const { tree, product, department } = useContext(AppContext);
@@ -36,14 +39,14 @@ function DepartmentsList() {
     className: 'text-center'
     }, {
     id: 'departmentTotalInvoicedAmount',
-    Header: 'Total Amount Invoiced',
-    accessor: department => calculateDepartmentInvoiceValue(department),
+    Header: 'Total Amount Invoiced / Prepaid',
+    accessor: department => calculateDepartmentInvoiceValue(department) + calculateDepartmentPrepaidValueUsed(department),
     Cell: props => <span>{formatMoney(props.value)}</span> ,
     className: 'text-center'
     }, {
     id: 'departmentTotalOutstandingAmount',
     Header: 'Total Amount Outstanding',
-    accessor: department => calculateDepartmentUsageBillingTotal(department) - calculateDepartmentInvoiceValue(department),
+    accessor: department => calculateDepartmentUsageBillingTotal(department) - calculateDepartmentInvoiceValue(department) - calculateDepartmentPrepaidValueUsed(department),
     Cell: props => <span className={props.value > 0 ? 'red' : 'green'}>{formatMoney(props.value)}</span> ,
     className: 'text-center'
     }]

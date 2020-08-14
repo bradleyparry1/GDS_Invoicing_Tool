@@ -11,18 +11,26 @@ import PrepaymentSection from '../components/PrepaymentSection';
 import InvoiceSection from '../components/InvoiceSection';
 import ServicesList from '../components/ServicesList';
 import AppContext from './AppContext';
-import { calculateDepartmentUsageBillingTotal, calculateDepartmentInvoiceValue, calculateDepartmentPrepaidValue } from '../functions/departmentFunctions';
-import formatMoney from '../functions/utilities';
+import { 
+    calculateDepartmentUsageBillingTotal, 
+    calculateDepartmentInvoiceValue, 
+    calculateDepartmentPrepaidValue,
+    calculateDepartmentPrepaidValueUsed,
+    calculateDepartmentIncomeGenerated
+} from '../functions/departmentFunctions';
+import {formatMoney} from '../functions/utilities';
 
 function Department(){
     const { product, department, tree } = useContext(AppContext);
     const productData = tree.value[product.value];
     const departmentData = tree.value[product.value].departments[department.value];
-    
+
     const billingAmount = calculateDepartmentUsageBillingTotal(departmentData);
     const invoiceAmount = calculateDepartmentInvoiceValue(departmentData);
+    const incomeAmount = calculateDepartmentIncomeGenerated(departmentData);
     const prepaymentAmount = calculateDepartmentPrepaidValue(departmentData);
-    const outstanding = billingAmount - invoiceAmount - prepaymentAmount;
+    const prepaymentAmountUsed = calculateDepartmentPrepaidValueUsed(departmentData);
+    const outstanding = billingAmount - invoiceAmount - prepaymentAmountUsed;
 
     const backToDepartmentList = () => {
         department.updateFunction(null);
@@ -41,20 +49,24 @@ function Department(){
                 </Col>
             </Row>
             <Row className='mb-3'>
-                <Col xs={12}>
+                <Col xs={9}>
                     <h1>{departmentData.DepartmentName}</h1>
+                </Col>
+                <Col xs={3}>
+                    <b>Customer Number: </b>{departmentData.CustomerNumber}<br />
+                    <b>Location: </b>{departmentData.Location}
                 </Col>
             </Row>
             <Row>
-                <Col md={12} lg={4}>
+                <Col md={12} lg={12}>
                     <Scorecard 
                         variant={'dark'}
-                        title={"Total Amount To Bill"}
+                        title={"Total Cost of Usage"}
                         value={formatMoney(billingAmount)}
                     />
                 </Col>
                 
-                <Col md={6} lg={4}>
+                <Col md={6} lg={6}>
                     <Scorecard 
                         variant={'success'}
                         title={"Total Amount Prepaid"}
@@ -62,11 +74,27 @@ function Department(){
                     />
                 </Col>
 
-                <Col md={6} lg={4}>
+                <Col md={6} lg={6}>
+                    <Scorecard 
+                        variant={'success'}
+                        title={"Prepaid Amount Used"}
+                        value={formatMoney(prepaymentAmountUsed)}
+                    />
+                </Col>
+
+                <Col md={6} lg={6}>
                     <Scorecard 
                         variant={'success'}
                         title={"Total Amount Invoiced"}
                         value={formatMoney(invoiceAmount)}
+                    />
+                </Col>
+
+                <Col md={6} lg={6}>
+                    <Scorecard 
+                        variant={'success'}
+                        title={"Income Recieved"}
+                        value={formatMoney(incomeAmount)}
                     />
                 </Col>
 

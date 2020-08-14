@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
@@ -11,53 +11,55 @@ import forEach from 'lodash/forEach';
 
 function ForActionTable(props) {
     let { product, department, tree } = props;
-    const { contacts, pos, prepayments } = department;
-    
-    forEach(prepayments, (prepayment) => {
-        prepayments[prepayment.ID].Remaining = prepayment.Amount;
-    })
-
-    const usage = getDepartmentCharateristics(department,'usage').filter((usageItem) => {
-        return !usageItem.InvoiceID && usageItem.totalcost > 0;
-    }).map((usageItem) => {
-        usageItem.StartDate = new Date(usageItem.StartDate);
-        usageItem.EndDate = new Date(usageItem.EndDate);
-        usageItem.displayAmount = usageItem.totalcost;
-        return usageItem;
-    }).sort((a,b) => {
-        const aTime = a.StartDate.getTime()
-        const bTime = b.StartDate.getTime()
-        return aTime === bTime ? 0 : aTime > bTime ? 1 : -1;
-    }).filter((usageItem) => {
-        var prepaid = false;
-        var usageItemStart = new Date(usageItem.StartDate);
-        var usageItemEnd = new Date(usageItem.EndDate);
+    const { contacts, pos } = department;
         
-        forEach(prepayments, (prepayment) => {
-
-            const serviceIdList = prepayment.ServiceIDs ? JSON.parse(prepayment.ServiceIDs) : [];
-            const prepaymentStart = new Date(prepayment.StartDate);
-            const prepaymentEnd = new Date(prepayment.EndDate);
-            
-            if(!prepaid && prepayments[prepayment.ID].Remaining > 0 && serviceIdList.includes(usageItem.service_id) && usageItemStart >= prepaymentStart && usageItemEnd <= prepaymentEnd){
+    const filterUsageInNeedOfAction = (department) => {
+        
+        const {prepayments} = department;
+        return getDepartmentCharateristics(department,'usage').filter((usageItem) => {
+            return usageItem.totalcost > (Number(usageItem.InvoiceAmount ? usageItem.InvoiceAmount : 0) + Number(usageItem.PrepaymentAmount ? usageItem.PrepaymentAmount : 0));
+        }).map((usageItem) => {
+            usageItem.StartDate = new Date(usageItem.StartDate);
+            usageItem.EndDate = new Date(usageItem.EndDate);
+    
+            usageItem.displayInvoiceAmount = usageItem.totalcost - (usageItem.PrepaymentAmount ? usageItem.PrepaymentAmount : 0);
+    
+            var usageItemStart = new Date(usageItem.StartDate);
+            var usageItemEnd = new Date(usageItem.EndDate);
+            var prepaid = false;
+    
+            forEach(prepayments, (prepayment) => {
+                const serviceIdList = prepayment.ServiceIDs ? JSON.parse(prepayment.ServiceIDs) : [];
+                const prepaymentStart = new Date(prepayment.StartDate);
+                const prepaymentEnd = new Date(prepayment.EndDate);
                 
-                if(prepayments[prepayment.ID].Remaining > usageItem.totalcost){
-                    prepayments[prepayment.ID].Remaining -= usageItem.totalcost;
-                    prepaid = true;
-                } else {
-                    usageItem.displayAmount -= prepayments[prepayment.ID].Remaining
-                    prepayments[prepayment.ID].Remaining = 0;
+                if(!prepaid && prepayments[prepayment.ID].Remaining > 0 && serviceIdList.includes(usageItem.service_id) && usageItemStart >= prepaymentStart && usageItemEnd <= prepaymentEnd){
+                    
+                    if(prepayments[prepayment.ID].Remaining > usageItem.totalcost){
+                        usageItem.PrepaymentID = prepayment.ID;
+                        usageItem.potentialPrepaymentAmount = usageItem.totalcost;
+                        prepaid = true;
+                    } else {
+                        usageItem.PrepaymentID = prepayment.ID;
+                        usageItem.potentialPrepaymentAmount = prepayments[prepayment.ID].Remaining;
+                        prepaid = true;
+                    }
                 }
-            }
+            });
+    
+            usageItem.PrepaymentAvailable = prepaid;
+    
+            return usageItem;
+        }).sort((a,b) => {
+            const aTime = a.StartDate.getTime()
+            const bTime = b.StartDate.getTime()
+            return aTime === bTime ? 0 : aTime > bTime ? 1 : -1;
         });
-
-        return !prepaid;
-    });
-
-
-
+    }
+    
     const createPoGroups = (pos,usage) => {
         return reduce(pos,(total,po) => {
+            
             const serviceIdList = po.ServiceIDs ? JSON.parse(po.ServiceIDs) : [];
             total = reduce(serviceIdList,(subTotal,serviceId) => {
                 if(!subTotal[serviceId]){
@@ -97,9 +99,10 @@ function ForActionTable(props) {
             return object;
         },servicesWithSamePos);
     }
+    
+    const usage = filterUsageInNeedOfAction(department);
 
     const poGroups = createPoGroups(pos,usage);
-    
     const servicesWithSamePos = createServicesWithSamePoObject(poGroups)
     const displayGroups = createDisplayGroups(usage,poGroups,servicesWithSamePos);
 

@@ -3,8 +3,13 @@ import AppContext from '../views/AppContext'
 import Scorecard from './Scorecard';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import formatMoney from '../functions/utilities';
-import { calculateProductTotalAmountInvoiced, calculateProductTotalBillingAmount } from '../functions/productFunctions';
+import {formatMoney} from '../functions/utilities';
+import { 
+    calculateProductTotalAmountInvoiced, 
+    calculateProductTotalBillingAmount,
+    calculateProductTotalAmountPrepaid,
+    calculateProductTotalAmountPrepaidUsed
+} from '../functions/productFunctions';
 
 function DepartmentStats(){
     const { product, tree } = useContext(AppContext);
@@ -12,22 +17,26 @@ function DepartmentStats(){
 
     const billingAmount = calculateProductTotalBillingAmount(productData);
     const invoiceAmount = calculateProductTotalAmountInvoiced(productData);
-    const outstanding = billingAmount - invoiceAmount;
+
+    //const prepaidAmount = calculateProductTotalAmountPrepaid(productData);
+    const prepaidAmountUsed = calculateProductTotalAmountPrepaidUsed(productData);
+
+    const outstanding = billingAmount - invoiceAmount - prepaidAmountUsed;
 
     return (
         <Row>
             <Col>
                 <Scorecard 
                     variant={'dark'}
-                    title={"Total Amount To Bill"}
+                    title={"Usage Value"}
                     value={formatMoney(billingAmount)}
                 />
             </Col>
             <Col>
                 <Scorecard 
                     variant={'success'}
-                    title={"Total Amount Invoiced"}
-                    value={formatMoney(invoiceAmount)}
+                    title={"Invoiced / Prepaid"}
+                    value={formatMoney(invoiceAmount + prepaidAmountUsed)}
                 />
             </Col>
             <Col>

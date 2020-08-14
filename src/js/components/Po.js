@@ -78,8 +78,6 @@ function Po(props){
             setSubmitting(false)
         }).crud(type,'invoicingTool','POs', options);
     }
-    
-    console.log(po.StartDate,po.StartDate.slice(0,10));
 
     return (
         <Form onSubmit={handleSubmit} className='po'>

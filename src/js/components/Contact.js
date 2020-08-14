@@ -10,8 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 function Contact(props){
     const { contact, departmentId, updateContact, deleteContact, setShowNewForm, contactUsed } = props;
 
-    //console.log(contactUsed)
-
     const [editMode, setEditMode] = useState(props.new);
     const [submitting, setSubmitting] = useState(false);
 

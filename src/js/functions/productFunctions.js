@@ -1,5 +1,10 @@
 import reduce from 'lodash/reduce';
-import { calculateDepartmentInvoiceValue, calculateDepartmentUsageBillingTotal } from './departmentFunctions';
+import { 
+    calculateDepartmentInvoiceValue, 
+    calculateDepartmentUsageBillingTotal,
+    calculateDepartmentPrepaidValue,
+    calculateDepartmentPrepaidValueUsed
+} from './departmentFunctions';
 
 
 const calculateProductTotalAmountInvoiced = (product) => {
@@ -18,7 +23,27 @@ const calculateProductTotalBillingAmount = (product) => {
     },0)
 }
 
+const calculateProductTotalAmountPrepaid = (product) => {
+    let departments = product.departments;
+    return reduce(departments,(total,department) => {
+        total += calculateDepartmentPrepaidValue(department);
+        return total;
+    },0)
+}
+
+const calculateProductTotalAmountPrepaidUsed = (product) => {
+    let departments = product.departments;
+    return reduce(departments,(total,department) => {
+        total += calculateDepartmentPrepaidValueUsed(department);
+        return total;
+    },0)
+}
+
+
+
 export {
     calculateProductTotalAmountInvoiced,
-    calculateProductTotalBillingAmount
+    calculateProductTotalBillingAmount,
+    calculateProductTotalAmountPrepaid,
+    calculateProductTotalAmountPrepaidUsed
 }

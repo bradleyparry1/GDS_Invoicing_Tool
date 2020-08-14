@@ -1,7 +1,7 @@
 import React from 'react';
 import { calculateServiceUsageBillingTotal } from '../functions/serviceFunctions';
 import { calculateDepartmentUsageBillingTotal } from '../functions/departmentFunctions';
-import formatMoney from '../functions/utilities';
+import {formatMoney} from '../functions/utilities';
 import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';

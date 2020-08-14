@@ -24,7 +24,7 @@ function CreateInvoiceButton(props){
         <Alert variant={'secondary'}>
             <Container>
                 <Row>
-                    <Col xs={8} className='my-auto'>
+                    <Col xs={6} className='my-auto'>
                         <Button variant='secondary' className='full-width' onClick={showButtons} disabled={disabled}>
                             {submitting ? 
                                 <>
@@ -34,7 +34,7 @@ function CreateInvoiceButton(props){
                                 : "Create Invoice"}
                         </Button>
                     </Col>
-                    <Col xs={4}>
+                    <Col xs={6}>
                         {buttonsVisible ?
                             <>
                                 <Button size='sm' className='full-width mb-2' onClick={createInvoiceEmail} disabled={disabled}>

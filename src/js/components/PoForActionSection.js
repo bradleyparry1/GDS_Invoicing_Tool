@@ -8,7 +8,7 @@ import reduce from 'lodash/reduce';
 import map from 'lodash/map';
 import keys from 'lodash/keys';
 import groupBy from 'lodash/groupBy';
-import formatMoney from '../functions/utilities';
+import {formatMoney} from '../functions/utilities';
 
 function PoForActionSection(props){
     let { product, department, tree, contacts, pos, usage } = props;
@@ -36,7 +36,21 @@ function PoForActionSection(props){
         if(!invoiceContact && contactIds[0]){
             setInvoiceContact(contactIds[0])
         }
-    },[contactIds])
+    },[contactIds]);
+
+    useEffect(() => {
+        if(poIds[0]){
+            setInvoicePo(poIds[0])
+        }
+    },[poIds]);
+
+    const updatePrepayment = (usageItem) => {
+        const newTree = {...tree.value};
+        usageItem.PrepaymentAmount = usageItem.potentialPrepaymentAmount;
+        newTree[product.value].departments[department.ID].prepayments[usageItem.PrepaymentID].usage[usageItem.ID] = usageItem;
+        newTree[product.value].departments[department.ID].prepayments[usageItem.PrepaymentID].Remaining -= usageItem.potentialPrepaymentAmount;
+        tree.updateFunction(newTree);
+    }
 
     const updateInvoiceItems = (e,usageItem) => {
         let newInvoiceUsageItems = {...invoiceUsageItems};
@@ -50,7 +64,7 @@ function PoForActionSection(props){
 
     const updateInvoiceAmount = () => {
         const newInvoiceAmount = reduce(invoiceUsageItems,(total,usageItem) => {
-            total += usageItem.displayAmount;
+            total += usageItem.displayInvoiceAmount;
             return total;
         },0);
         setInvoiceAmount(newInvoiceAmount);
@@ -102,6 +116,8 @@ function PoForActionSection(props){
         const emailObject = {
             product: tree.value[product.value].ProductName,
             department: department.DepartmentName,
+            location: department.Location,
+            customerNumber: department.CustomerNumber,
             period: invoicePeriod.join(", "),
             amount: formatMoney(invoiceAmount),
             contactEmails: contacts[invoiceContact].Email,
@@ -112,17 +128,22 @@ function PoForActionSection(props){
         }
 
         const usageItemUpdateObject = reduce(invoiceUsageItems, (returnObject,invoiceUsageItem) => {
-            returnObject[invoiceUsageItem.ID] = {update: {"InvoiceID": newId}, criteria: {"ID": invoiceUsageItem.ID}}
+            returnObject[invoiceUsageItem.ID] = {update: {"InvoiceID": newId, "InvoiceAmount": invoiceUsageItem.displayInvoiceAmount}, criteria: {"ID": invoiceUsageItem.ID}}
             return returnObject;
         },{});
         
         google.script.run.withSuccessHandler(() => {
             const newTree = {...tree.value};
+            newInvoice.CreatedAt = new Date();
             newTree[product.value].departments[department.ID].invoices[newId] = newInvoice;
+
+            console.log(newTree[product.value].departments[department.ID].invoices)
+
             map(newTree[product.value].departments[department.ID].services,(service) => {
                 map(service.usage,(usageItem) => {
                     if(keys(invoiceUsageItems).includes(usageItem.ID.toString())){
                         newTree[product.value].departments[department.ID].services[service.ID].usage[usageItem.ID].InvoiceID = newId;
+                        newTree[product.value].departments[department.ID].services[service.ID].usage[usageItem.ID].InvoiceAmount = newTree[product.value].departments[department.ID].services[service.ID].usage[usageItem.ID].displayInvoiceAmount;
                     }
                 })
             })
@@ -177,11 +198,16 @@ function PoForActionSection(props){
 
         google.script.run.withSuccessHandler(() => {
             const newTree = {...tree.value};
+            newInvoice.CreatedAt = new Date();
             newTree[product.value].departments[department.ID].invoices[newId] = newInvoice;
+
+
+
             map(newTree[product.value].departments[department.ID].services,(service) => {
                 map(service.usage,(usageItem) => {
                     if(keys(invoiceUsageItems).includes(usageItem.ID.toString())){
                         newTree[product.value].departments[department.ID].services[service.ID].usage[usageItem.ID].InvoiceID = newId;
+                        newTree[product.value].departments[department.ID].services[service.ID].usage[usageItem.ID].InvoiceAmount = newTree[product.value].departments[department.ID].services[service.ID].usage[usageItem.ID].displayInvoiceAmount;
                     }
                 })
             })
@@ -196,7 +222,6 @@ function PoForActionSection(props){
 
     const createBulkInvoiceRow = (bulkObject,usageItems,serviceName,index) => {
         const usageItemObject = reduce(usageItems,(object,usageItem) => {
-            console.log(usageItem)
             const usageItemStart = new Date(usageItem.StartDate);
             const usageItemEnd = new Date(usageItem.EndDate);
             object.usageItemText.push(usageItem.letter_breakdown ? `${usageItem.letter_breakdown} - ${usageItem.Period}` : `${usageItem.sms_fragments} SMS - ${usageItem.Period}`);
@@ -257,6 +282,7 @@ function PoForActionSection(props){
                                 usage={usage} 
                                 updateInvoice={updateInvoiceItems}
                                 submitting={submitting}
+                                updatePrepayment={updatePrepayment}
                             />
                         </Col>
                     </Row>
