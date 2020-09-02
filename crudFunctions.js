@@ -70,6 +70,12 @@ function addToBulk(invoiceObject,usageItemUpdateObject,newRows){
     exportSheet.getRange(exportSheet.getLastRow() + 1, 1,newRows.length,newRows[0].length).setValues(newRows);
 }
 
+function deleteInvoice(invoiceId){
+    var db = open(invoicingId);
+    updateRow( db, 'Notify Usage Data', {'InvoiceID': '', 'InvoiceAmount': ''}, {'InvoiceID': invoiceId} );
+    deleteRow( db, 'Invoices', {'ID': invoiceId} );
+}
+
 
 function addNewIds(options){
     const { newDepartments, newServices, notifyUsageIds } = options;

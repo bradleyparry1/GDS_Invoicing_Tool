@@ -23,7 +23,18 @@ function InvoiceSection(props) {
 
     const deleteInvoice = (invoiceId) => {
         const newTree = {...tree.value};
-        delete newTree[product.value].departments[department.ID].inovices[invoiceId];
+
+        for(var serviceId in newTree[product.value].departments[department.ID].services){
+            for(var usageItemId in newTree[product.value].departments[department.ID].services[serviceId].usage){
+                if(newTree[product.value].departments[department.ID].services[serviceId].usage[usageItemId].InvoiceID === invoiceId){
+                    newTree[product.value].departments[department.ID].services[serviceId].usage[usageItemId].InvoiceID = ''
+                    newTree[product.value].departments[department.ID].services[serviceId].usage[usageItemId].InvoiceAmount = ''
+                }
+            }
+        }
+
+        delete newTree[product.value].departments[department.ID].invoices[invoiceId];
+
         tree.updateFunction(newTree);
     }
 

@@ -136,9 +136,7 @@ function PoForActionSection(props){
             const newTree = {...tree.value};
             newInvoice.CreatedAt = new Date();
             newTree[product.value].departments[department.ID].invoices[newId] = newInvoice;
-
-            console.log(newTree[product.value].departments[department.ID].invoices)
-
+            
             map(newTree[product.value].departments[department.ID].services,(service) => {
                 map(service.usage,(usageItem) => {
                     if(keys(invoiceUsageItems).includes(usageItem.ID.toString())){

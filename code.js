@@ -6,7 +6,7 @@ function doGet(e) {
     var user = Session.getActiveUser().getEmail();
 
     if(user != "bradley.parry@digital.cabinet-office.gov.uk"){
-        var sheet = SpreadsheetApp.openById(trackingSheetId).getSheetByName("UPDATE THIS");
+        var sheet = SpreadsheetApp.openById(trackingSheetId).getSheetByName("Invoicing Tool");
         sheet.appendRow([user.replace("@digital.cabinet-office.gov.uk","").replace("."," "),new Date()]);
     }
 

@@ -10,7 +10,7 @@ import {formatDate} from '../functions/utilities';
 import { v4 as uuidv4 } from 'uuid';
 
 function Invoice(props){
-    const { invoice, departmentId, updateInvoice, setShowNewForm, serviceNames, contactEmail } = props;
+    const { invoice, departmentId, updateInvoice, setShowNewForm, serviceNames, contactEmail, deleteInvoice } = props;
     const [editMode, setEditMode] = useState(props.new);
     const [submitting, setSubmitting] = useState(false);
 
@@ -21,7 +21,7 @@ function Invoice(props){
         }
     }
 
-    /*
+    
     const deleteInvoiceHandler = () => {
         if(confirm("Are you sure you want to delete this invoice?")){
             setSubmitting(true)
@@ -30,13 +30,12 @@ function Invoice(props){
                 setSubmitting(false);
             }).withFailureHandler((msg) => {
                 alert(msg);
-                setSubmitting(false)
-            }).crud('delete','invoicingTool','Invoices',{criteriaObject: {ID: invoice.ID}});
+                setSubmitting(false);
+            }).deleteInvoice(invoice.ID);
         }
-    } */
+    } 
 
     const handleSubmit = (event) => {
-        
         event.preventDefault();
         event.stopPropagation();
         setSubmitting(true)
@@ -165,6 +164,7 @@ function Invoice(props){
                              : 
                             props.new ? "Submit Invoice" :"Submit Update"}
                         </Button> 
+                        {props.new ? '' : <Button disabled={submitting} variant="danger" size="sm" onClick={deleteInvoiceHandler}>Delete</Button>}
                     </ButtonGroup>
                </Col>
             </Row>

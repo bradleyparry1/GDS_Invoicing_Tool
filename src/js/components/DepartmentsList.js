@@ -18,12 +18,25 @@ function DepartmentsList() {
     
     const viewDepartment = departmentId => department.updateFunction(departmentId);
 
+    const filterFunction = (filter, row) => {
+      if(row.DepartmentName.toLowerCase().indexOf(filter.value.toLowerCase()) !== -1) {
+        return true;
+      } else {
+        return Object.values(row._original.services).some(service => {
+          if(service.ServiceName.toLowerCase().indexOf(filter.value.toLowerCase()) !== -1){
+            return true;
+          }
+          return false;
+        });
+      }
+    };
+
     const columns = [{
-    Header: props => <span>Departments</span>,
+    Header: 'Organisations',
     accessor: 'DepartmentName',
     Cell: props => <span onClick={() => viewDepartment(props.original.ID)}>{props.value}</span> ,
     filterable: true,
-    filterMethod: (filter, row) => row.DepartmentName.toLowerCase().indexOf(filter.value.toLowerCase()) !== -1,
+    filterMethod: filterFunction,
     className: 'word-wrap btn btn-link',
     width: 390
     }, {
@@ -55,7 +68,7 @@ function DepartmentsList() {
         <ReactTable
         data={currentDepartmentsList}
         columns={columns}
-        defaultSorted={[{id: 'departmentTotalOutstandingAmount', desc: true}]}
+        defaultSorted={[{id: 'DepartmentName'}]}
         resizable={false}
       />
     )
