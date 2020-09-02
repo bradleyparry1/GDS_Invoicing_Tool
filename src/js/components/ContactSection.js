@@ -9,7 +9,7 @@ import Contact from './Contact';
 
 function ContactSection(props) {
     const { department, tree, product } = props;
-    const { contacts, invoices } = department;
+    const { contacts, invoices, services } = department;
     
     const usedContacts = map(invoices,(invoice) => invoice.ContactID);
 
@@ -46,6 +46,7 @@ function ContactSection(props) {
                         <Contact 
                             key={contact.ID} 
                             contact={contact} 
+                            services={services}
                             contactUsed={usedContacts.includes(contact.ID)}
                             new={false} 
                             updateContact={updateContact} 
@@ -59,6 +60,7 @@ function ContactSection(props) {
                     contact={{}} 
                     new={true} 
                     departmentId={department.ID} 
+                    services={services}
                     updateContact={updateContact} 
                     deleteContact={deleteContact} 
                     setShowNewForm={setShowNewForm}

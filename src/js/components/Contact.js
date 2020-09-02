@@ -5,10 +5,11 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import ServiceSelect from './ServiceSelect';
 import { v4 as uuidv4 } from 'uuid';
 
 function Contact(props){
-    const { contact, departmentId, updateContact, deleteContact, setShowNewForm, contactUsed } = props;
+    const { contact, departmentId, updateContact, deleteContact, setShowNewForm, contactUsed, services } = props;
 
     const [editMode, setEditMode] = useState(props.new);
     const [submitting, setSubmitting] = useState(false);
@@ -39,12 +40,17 @@ function Contact(props){
         event.stopPropagation();
         setSubmitting(true);
         const form = event.currentTarget;
-        const updateObject = {};
+        const updateObject = { ServiceIDs: [] };
         for(var i = 0; i < form.length - 1; i++){
             if(form[i].name){
-                updateObject[form[i].name] = form[i].value;
+                if(form[i].name === "ServiceIDs"){
+                    updateObject[form[i].name].push(form[i].value);
+                } else {
+                    updateObject[form[i].name] = form[i].value;
+                }
             }
         }
+        updateObject.ServiceIDs = JSON.stringify(updateObject.ServiceIDs);
 
         const options = {
             updateObject
@@ -109,21 +115,22 @@ function Contact(props){
                 </Col>
             </Form.Group>
 
-            <Form.Group as={Row} controlId={`address${contact.ID}`}>
+            
+
+            <Form.Group as={Row} controlId={`services${contact.ID}`}>
                 <Form.Label column sm="3">
-                    <b>Address:</b>
+                    <b>Services:</b>
                 </Form.Label>
                 <Col sm="9">
-                    <Form.Control 
-                        name="Address"
-                        as="textarea" 
-                        plaintext={!editMode || submitting} 
-                        readOnly={!editMode || submitting} 
-                        placeholder="Address" 
-                        defaultValue={contact.Address} 
+                    <ServiceSelect 
+                        editMode={editMode} 
+                        submitting={submitting} 
+                        services={services} 
+                        value={contact.ServiceIDs}
                     />
                 </Col>
             </Form.Group>
+
             { editMode ?
             <Row>
                <Col sm="3"></Col>
