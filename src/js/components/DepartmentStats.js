@@ -42,7 +42,7 @@ function DepartmentStats(){
             <Col>
                 <Scorecard 
                     variant={outstanding > 0 ? 'danger' : 'success'}
-                    title={"Amount Outstanding"}
+                    title={"Outstanding"}
                     value={formatMoney(outstanding)}
                 />
             </Col>

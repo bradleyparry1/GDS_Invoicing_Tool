@@ -10,7 +10,7 @@ function Scorecard(props) {
             <Container>
                 <Row>
                     <Col className='text-center'>
-                        <h5>{props.title}</h5>
+                        <h5> 20/21 {props.title}</h5>
                     </Col>
                 </Row>
                 <Row className='text-center'>
