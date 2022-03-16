@@ -93,7 +93,7 @@ function Department(){
                 <Col md={6} lg={6}>
                     <Scorecard 
                         variant={'success'}
-                        title={"Income Recieved"}
+                        title={"Income Recorded"}
                         value={formatMoney(incomeAmount)}
                     />
                 </Col>
